@@ -1,0 +1,127 @@
+Índice:
+	Acceso mediante https: Creación cuenta y token personal para clonar/bajar un repositorio remoto hacia la compu (hacerlo repositorio local)
+	Acceso mediante ssh: Creación cuenta y clave ssh para los mismos fines ^
+	Uso de repositorios: Comandos de git para manejo de repositorios locales y remotos
+
+____________________________________________________________________________________________________________
+	· Acceso mediante https
+Si utilizan el URL marcado como HTTPS, el comando para clonar va a ser:
+
+git clone https://github.com/ProgAv-UNRC/Playground.git
+En este caso, git va a pedir un usuario y una contraseña, y van a tener que usar los de su cuenta de GitHub. 
+Sin embargo, hace Octubre del 2021, GitHub ya no acepta el uso de la contraseña para su uso fuera de la web, 
+en cambio es necesario usar un Personal Access Token.
+
+Para crearlo, necesitan ir a la página de GitHub, loguearse en su cuenta, y dirigirse a 
+Settings -> Developer settings -> Personal access tokens.
+-> Tokens (classic) -> Desplegable -> Generate new token (classic) -> en Note escribimos para lo que es ese token (git_accesorepo)
+-> Expiration (pasado el tiempo deseado, se va a tner que generar uno nuevo {de la misma forma calculo})
+-> Select scopes: repo (principalmente) , delete repo (opcional, mas abajo)
+-> Generate token
+
+Ahí van a tener que generar un nuevo token, darle un nombre apropiado junto a los permisos asociados a ese token, 
+al contrario de la contraseña que da acceso completo a su cuenta de GitHub, 
+los tokens pueden tener permisos más específicos, para trabajar con un repositorio como vamos a hacer en la materia, 
+recomendamos seleccionar solamente los permisos bajo repo (el primer recuadro de permisos).
+
+Es importante que el token que es generado lo copien en algún lugar, una vez que completen el proceso no van a poder volver a ver cual era.
+
+Una opción puede ser usar alguna herramienta de manejo de contraseñas como KeePassXC 
+(la cual es gratis, de código abierto, y disponible para múltiples plataformas).
+
+Finalmente, el token generado lo van a usar en el campo de contraseña cuando git pida usuario y contraseña.
+
+	Note: 			git_accesorepo
+	Expiration: 	The token will expire on Fri, Jul 7 2023
+	Scopes: 		repo, delete repo
+	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
+____________________________________________________________________________________________________________
+	· Acceso mediante ssh
+Si utilizan el URL marcado como SSH, el comando para clonar va a ser:
+
+git clone git@github.com:ProgAv-UNRC/Playground.git
+En este caso, git no va a pedir usuario y contraseña, sino que va a buscar una clave ssh privada 
+que se corresponda con la clave ssh pública que tienen en su cuenta de GitHub. 
+
+Las instrucciones, si bien descritas en el link anterior, son:
+(https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+En la terminal, ejecutar ssh-keygen -t ed25519 -C "your_email@example.com", 
+alternativamente, pueden usar ssh-keygen -t rsa -b 4096 -C "your_email@example.com" 
+si tienen un problema con el algoritmo usado por el primer comando.
+
+Cuando sea necesario definir el archivo donde van a guardar la clave pueden no escribir nada y el archivo se va a guardar en la ruta por defecto 
+(revisar link), o pueden dar un nombre y una ruta particular 
+(se recomienda solo cambiar el nombre, manteniendo el resto de la ruta usada por defecto). 
+Finalmente van a tener con dos archivos para la ruta elegida: ruta, la clave privada; y ruta.pub, la clave pública.
+
+Ahora necesitan iniciar el agente ssh mediante el comando eval "$(ssh-agent -s)". 
+Este paso puede variar según el OS, revisen el link anterior que ofrece más información.
+
+Luego de generar las claves, por ejemplo ~/.ssh/id_ed25519 y ~/.ssh/id_ed25519.pub, 
+van a crear o modificar el archivo ~/.ssh/config 
+Y agregar lo siguiente:
+
+Host github.com
+  HostName github.com
+  IdentityFile ~/.ssh/id_ed25519
+
+Para terminar van a tener que copiar la clave pública en su cuenta de GitHub, 
+primero van a tener que abrir la clave pública ~/.ssh/id_ed25519.pub (siguiendo el ejemplo anterior). 
+Pueden usar cat en la terminal si están en Linux/Unix, nano en la terminal de Mac OS X, o algún editor de texto, 
+se recomienda uno que muestre el texto verbatim, Notepad++ es una muy buena opción para Windows, 
+gedit es una buena opción particularmente en Ubuntu, y Atom es una buena opción multiplataforma. 
+
+Con la clave pública copiada van a ir a su cuenta de GitHub Settings -> SSH and GPG keys y van a crear una nueva clave ssh, 
+dándole un nombre significativo como ubuntu@notebook y copiando la clave pública en el campo correspondiente.
+____________________________________________________________________________________________________________
+	· Uso de repositorios/comandos principales Git
+desde la pagina de github, del lado derecho aparece un fork. apretas fork y te crea todo
+
+1) 	1.1) git init : establece la carpeta actual como repositorio local
+	1.2) git clone: clona un repositorio de github y lo descarga en la carpeta actual (lo pone en una carpetita aparte)
+
+2)	2.1) git add <archivo> : agrega archivos nuevos (que estén en la misma carpeta) o modificaciones en el area de commit 
+							(como una sala de espera de los archivos). Si los añadimos y después se le cambia el nombre del archivo deja de estar
+							en el area de commit. 
+		 git add . : agrega todos los archivos
+
+	2.2) git rm <archivo> : sacar un archivo del area de commit :
+		2.2.1) git rm -f <archivo> : elimina el archivo del area de commit y además lo elimina de la carpeta
+		2.2.2) git rm --cached <archivo> : elimina el archivo sólo del area de commit
+
+3)	git commit -m "mensaje" : los archivos en el area de commit se introducen al repositorio local. El mensaje cuenta lo que tiene ese commit.
+	3.1) en caso de querer volver el commit para atras: git reset HEAD~1
+	3.2) en caso de cambiar de branch:
+		git checkout <branch a cambiar>	{usarlo para ir cambiando}
+		git checkout -b <crea una nueva branch>
+		3.2.1) git branch : muestra todas las branchs de un repositorio remoto (en la que estés actualmente la resalta)
+
+4)	git config te deja configurar variables que te dejan controlar todos los aspectos de cómo va a operar git.
+	· system hace que las variables que modifiques queden disponibles (¿modificadas?) para todos los usuarios en el sistema. (permisos admin)
+	· global hace que las configuraciones modificadas sean para el usuario actual y para todos los proyectos
+	· local hace que las configuraciones queden solamente para el repositorio actual
+	4.1) git config --local user.email "poner el email"
+		 git config --local user.name "poner el nombre"
+	4.2) git config --global user.email "poner el email"
+		 git config --global user.name "poner el nombre"
+	4.3) git config --system user.email "poner el email"
+		 git config --system user.name "poner el nombre"
+
+5) Ir a github y crear un nuevo repositorio remoto:
+	Repository name: pract8prav
+	Description: lo que tiene ese repositorio
+
+	Se puede hacer desde la consola:
+	git remote add <nombre del repositorio (nemotecnico)> <url completa (ej: https://github.com/Joaquintinsin/pract8prav.git)>
+
+6)	git push <nombre del repo remoto> : subir / sincronizar nuestros cambios en el repositorio local (compu) con el repositorio remoto (github)
+	6.1) si habia cambios en el repositorio remoto que no teniamos, va a pedir que hagamos 	git pull		 para traer los cambios.
+	6.2) si pueden sincronizarse automaticamente, hay que repushear:	git push	de nuevo. sino va a pedir qué cambios queremos dejar.
+	6.3) a mí me pide git push --set-upstream <nombre del repo remoto> main
+	6.4) a mí me pide git push --set-upstream <nombre del repo remoto> master
+
+7)	git pull : bajar cambios remotos / sincronizar nuestro repositorio local con cambios en el repositorio remoto
+
+
+8) 	git push --force  : sobreescribe todo lo que haya y sube tu parte solamente. puede borrar el progreso que alguien mas tambien haya colaborado
