@@ -34,7 +34,6 @@ Finalmente, el token generado lo van a usar en el campo de contraseña cuando gi
 	Note: 			git_accesorepo
 	Expiration: 	The token will expire on Fri, Jul 7 2023
 	Scopes: 		repo, delete repo
-	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
 ____________________________________________________________________________________________________________
 	· Acceso mediante ssh
 Si utilizan el URL marcado como SSH, el comando para clonar va a ser:
