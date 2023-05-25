@@ -1,0 +1,113 @@
+git push origin main
+error: src refspec main does not match any.
+error: falló el push de algunas referencias a 'origin'
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git commit -m "Todas las practicas haskell"
+[master (commit-raíz) 8fffee6] Todas las practicas haskell
+ 23 files changed, 1610 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 1ra clase.txt
+ create mode 100644 comoUsarGit.txt
+ create mode 100644 ejerAdic.hs
+ create mode 100644 p1.hs
+ create mode 100644 p2.hs
+ create mode 100644 p3.hs
+ create mode 100644 p4.hs
+ create mode 100644 p5.hs
+ create mode 100644 p6.hs
+ create mode 100644 p7.hs
+ create mode 100644 p8.hs
+ create mode 100644 p9.hs
+ create mode 100644 practico1.pdf
+ create mode 100644 practico2.pdf
+ create mode 100644 practico3.pdf
+ create mode 100644 practico4.pdf
+ create mode 100644 practico5.pdf
+ create mode 100644 practico6.pdf
+ create mode 100644 practico7.pdf
+ create mode 100644 practico8.pdf
+ create mode 100644 practico9.pdf
+ create mode 100644 propiedadeslogicas.pdf
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push origin main
+error: src refspec main does not match any.
+error: falló el push de algunas referencias a 'origin'
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push
+fatal: No se ha configurado un destino para el push.
+Puedes o especificar una URL desde la línea de comandos o configurar un repositorio remoto usando
+
+    git remote add <nombre> <url>
+
+y luego haciendo push al nombre del remoto
+
+    git push <nombre>
+
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push practicasHaskell 
+fatal: La rama actual master no tiene una rama upstream.
+Para realizar un push de la rama actual y configurar el remoto como upstream, use
+
+	git push --set-upstream practicasHaskell master
+
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push practicasHaskell main
+error: src refspec main does not match any.
+error: falló el push de algunas referencias a 'https://github.com/Joaquintinsin/practicasHaskell'
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push
+fatal: No se ha configurado un destino para el push.
+Puedes o especificar una URL desde la línea de comandos o configurar un repositorio remoto usando
+
+    git remote add <nombre> <url>
+
+y luego haciendo push al nombre del remoto
+
+    git push <nombre>
+
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git remote -v
+practicasHaskell	https://github.com/Joaquintinsin/practicasHaskell (fetch)
+practicasHaskell	https://github.com/Joaquintinsin/practicasHaskell (push)
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git branch
+* master
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git branch main
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git branch
+  main
+* master
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git branch main
+fatal: Una rama llamada 'main' ya existe.
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git checkout main
+Cambiado a rama 'main'
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push
+fatal: No se ha configurado un destino para el push.
+Puedes o especificar una URL desde la línea de comandos o configurar un repositorio remoto usando
+
+    git remote add <nombre> <url>
+
+y luego haciendo push al nombre del remoto
+
+    git push <nombre>
+
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push practicasHaskell 
+fatal: La rama actual main no tiene una rama upstream.
+Para realizar un push de la rama actual y configurar el remoto como upstream, use
+
+	git push --set-upstream practicasHaskell main
+
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push practicasHaskell  main
+Username for 'https://github.com':
+Password for 'https://joaquintinsin@github.com': 
+remote: Repository not found.
+fatal: repository 'https://github.com/Joaquintinsin/practicasHaskell/' not found
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git branch -M main
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git remote add origin https://github.com/Joaquintinsin/practicasHaskell.git
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git push -u origin main
+Username for 'https://github.com':
+Password for 'https://joaquintinsin@github.com': 
+Contando objetos: 25, listo.
+Delta compression using up to 4 threads.
+Comprimiendo objetos: 100% (24/24), listo.
+Escribiendo objetos: 100% (25/25), 717.13 KiB | 1.96 MiB/s, listo.
+Total 25 (delta 0), reused 0 (delta 0)
+To https://github.com/Joaquintinsin/practicasHaskell.git
+ * [new branch]      main -> main
+Rama 'main' configurada para hacer seguimiento a la rama remota 'main' de 'origin'.
+joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git status
+En la rama main
+Tu rama está actualizada con 'origin/main'.
+
+nada para hacer commit -> el árbol de trabajo está limpio

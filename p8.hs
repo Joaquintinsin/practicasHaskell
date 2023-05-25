@@ -55,10 +55,10 @@ Utilizar estas ideas para escribir los siguientes cuantificadores:
     · (∀i : 0 ≤ i < #xs : p xs.i)
 Para un predicado p dado.
 -}
-paraTodo :: [Int] -> [a] -> (Int -> [a] -> Bool)-> Bool
-paraTodo [] _ f = True
-paraTodo (x:xs) [] f = True
-paraTodo (x:xs) (y:ys) f = and [f i (y:ys) | i <- (x:xs)]
+paraTodoMio :: [Int] -> [a] -> (Int -> [a] -> Bool)-> Bool
+paraTodoMio [] _ f = True
+paraTodoMio (x:xs) [] f = True
+paraTodoMio (x:xs) (y:ys) f = and [f i (y:ys) | i <- (x:xs)]
 
 paraTodoClase :: [Int] -> [a] -> (Int -> [a] -> Bool)-> Bool
 paraTodoClase indices xs f = and [f i xs | i <- indices]
@@ -107,10 +107,10 @@ sumatoria (p:ps) [] f = 0
 sumatoria (p:ps) xs f = sum [(xs!!i) | i <- (p:ps) , f (xs!!i)]
 -}
 
-productoria :: [Int] -> [Int] -> (Int -> [Int] -> Int) -> Int
-productoria [] _ f = 0
-productoria (p:ps) [] f = 0
-productoria (p:ps) xs f = (f p xs) * (productoria ps xs f)
+productoriaMio :: [Int] -> [Int] -> (Int -> [Int] -> Int) -> Int
+productoriaMio [] _ f = 0
+productoriaMio (p:ps) [] f = 0
+productoriaMio (p:ps) xs f = (f p xs) * (productoriaMio ps xs f)
 
 productoriaClase :: [Int] -> [Int] -> (Int -> [Int] -> Int) -> Int
 productoriaClase is xs p = product [p i xs | i <- is]
