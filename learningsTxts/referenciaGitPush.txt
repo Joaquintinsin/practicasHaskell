@@ -110,4 +110,6 @@ joaquin@joaquin-POSITIVO-BGH:~/Documentos/prAv$ git status
 En la rama main
 Tu rama está actualizada con 'origin/main'.
 
-nada para hacer commit -> el árbol de trabajo está limpio
+nada para hacer commit, el árbol de trabajo está limpio
+
+...Viendo si saco el txt este...
