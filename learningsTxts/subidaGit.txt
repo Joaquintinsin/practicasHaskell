@@ -1,0 +1,46 @@
+edite y agregue cosas nuevas: le hice git add
+commiteé los cambios: git commit -m etc
+pusheé (tenia archivos ya subidos que los modifique): git push practicasHaskell main
+pasó esto:
+	Username for 'https://github.com': joaquintinsin
+	Password for 'https://joaquintinsin@github.com': 
+	To https://github.com/Joaquintinsin/practicasHaskell
+	 ! [rejected]        main -> main (fetch first)
+	error: falló el push de algunas referencias a 'https://github.com/Joaquintinsin/practicasHaskell'
+	ayuda: Actualizaciones fueron rechazadas porque el remoto contiene trabajo que
+	ayuda: no existe localmente. Esto es causado usualmente por otro repositorio 
+	ayuda: realizando push a la misma ref. Quizás quiera integrar primero los cambios
+	ayuda: remotos (ej. 'git pull ...') antes de volver a hacer push.
+	ayuda: Vea 'Notes about fast-forwards0 en 'git push --help' para detalles.
+¿por qué? porque ya tenia archivos subidos y los modifiqué.
+entoncs me pidio que hiciera pull: git pull
+pasó esto:
+	me abrió el editor nano y me pidió que escriba un mensaje diciendo porqué deberían aceptar el push que estoy haciendo basicamnete
+	para demostrar que estoy haciendo bien los cambios ponele
+	ctrl+g creo (guardé la linea que escribí)
+	ctrl+x (exit)
+pulleó con éxito:
+	remote: Enumerating objects: 5, done.
+	remote: Counting objects: 100% (5/5), done.
+	remote: Compressing objects: 100% (3/3), done.
+	remote: Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+	Desempaquetando objetos: 100% (3/3), listo.
+	Desde https://github.com/Joaquintinsin/practicasHaskell
+	   8fffee6..14bbce3  main       -> origin/main
+	Merge made by the 'recursive' strategy.
+	 comoUsarGit.txt | 1 -
+	 1 file changed, 1 deletion(-)
+pusheé de nuevo: git push practicasHaskell main
+pasó esto:
+	Username for 'https://github.com': joaquintinsin
+	Password for 'https://joaquintinsin@github.com': 
+	Contando objetos: 9, listo.
+	Delta compression using up to 4 threads.
+	Comprimiendo objetos: 100% (9/9), listo.
+	Escribiendo objetos: 100% (9/9), 67.77 KiB | 3.08 MiB/s, listo.
+	Total 9 (delta 4), reused 0 (delta 0)
+	remote: Resolving deltas: 100% (4/4), completed with 3 local objects.
+	To https://github.com/Joaquintinsin/practicasHaskell
+	   14bbce3..20c7f00  main -> main
+pusheó con éxito. 
+Listo.
