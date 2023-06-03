@@ -241,11 +241,12 @@ Ejercicio 5. Dado el siguiente programa:
 con N : Nat
 var n : Nat; r : Bool
 var A: array array:[0..N) of Nat
-{N > 0}
-n,r := 0, True
-{r =< ∀i : 0 ≤ i < n : A.i = A.(N - i - 1) > ∧ 0 ≤ n ≤ N >}
-do n <> N
-n,r := n + 1, r and A.n = A.(N - n -1)
-od
-{r =< ∀i : 0 ≤ i < N : A.i = A.(N - i - 1) >}
+    {N > 0}
+    n,r := 0, True
+    {r =< ∀i : 0 ≤ i < n : A.i = A.(N - i - 1) > ∧ 0 ≤ n ≤ N >}
+    do n <> N
+     n,r := n + 1, r and A.n = A.(N - n -1)
+    od
+    {r =< ∀i : 0 ≤ i < N : A.i = A.(N - i - 1) >}
+
 ¿Qué hace este algoritmo? Demostrar la corrección del mismo.
