@@ -35,12 +35,14 @@ True
 
 Ejercicio 2. Demostrar las siguientes propiedades
     · map (f o g)xs = (map f) o (map g)xs
+map (f o g)xs   -#-#-#-     (map f) (map g xs)
+
     · reversa (xs ++ ys) = reversa ys ++ reversa xs
     · reversa (reversa xs) = xs
 #######################################################
 Probar: map (f o g) xs = (map f) o (map g) xs
 
-o :: (a -> a) -> (a -> a) -> [a] -> a
+o :: (a -> a) -> (a -> a) -> [a] -> [a]
 o f g [] = []
 o f g xs = f (g xs) -- f o g xs = f (g xs) con notacion infija
 
@@ -411,8 +413,8 @@ Continuacion en *
     ={H.I.}
     (x = a + sum xs) v g xs (a+x)
 
-    g [] a = False
-    g (x:xs) a = x == a + sum xs v g xs (n+x)
+    g [] n = False
+    g (x:xs) n = (x == (n + sum xs)) v (g xs (n+x))
 
 *Continuacion def f
 ={def g}
@@ -451,10 +453,17 @@ Continuacion en *
     ={H.I.}
     x + sum xs
 
+-- Especificar y derivar una funcion que dada una lista determine si 
+-- existe un elemento en ella que sea igual a la suma del resto de los elementos de la lista.
+g [] n = False
+g (x:xs) n = (x == (n + sum xs)) || (g xs (n+x))
+
+f [] = False
+f (x:xs) = (x == sum xs) || g (x:xs) 0
+
 * Ejercicio 8. Dada f : Nat -> Bool y suponiendo (∃n : 0 ≤ n : f.n), especificar
 y derivar una funcion que encuentre el minimo natural x tal que f.x. 
---Pagina 193 o 173 libro derivar una funcion (g) que satisface f
-
+--Pagina 193 libro derivar una funcion (g) que satisface f
 
 
 
@@ -499,10 +508,81 @@ False
 
     · Caso inductivo: P (x:xs) (y:ys)
 (∃as, bs :: (y:ys) = as ++ (x:xs) ++ bs)
+={logica}
+(∃as, bs : as = [] v as /= [] : (y:ys) = as ++ (x:xs) ++ bs)
+={particion de rango}
+(∃as, bs : as = [] : (y:ys) = as ++ (x:xs) ++ bs) v (∃as, bs : as /= [] : (y:ys) = as ++ (x:xs) ++ bs)
+={rango unitario}
+(∃bs :: (y:ys) = [] ++ (x:xs) ++ bs) v (∃as,bs : as /= [] : (y:ys) = as ++ (x:xs) ++ bs)
+={as /= [] -> (a:as) /= []}
+(∃bs :: (y:ys) = [] ++ (x:xs) ++ bs) v (∃a,as,bs : (a:as) /= [] : (y:ys) = (a:as) ++ (x:xs) ++ bs)
+={def ++}
+(∃bs :: (y:ys) = (x:xs) ++ bs) v (∃a,as,bs : (a:as) /= [] : (y:ys) = (a:as) ++ (x:xs) ++ bs)
+={logica: (a:as) /= [] = True}
+(∃bs :: (y:ys) = (x:xs) ++ bs) v (∃a,as,bs :: (y:ys) = (a:as) ++ (x:xs) ++ bs)
+={def = para listas}
+(∃bs :: y = x ^ ys = xs ++ bs) v (∃a,as,bs :: y = a ^ ys = as ++ (x:xs) ++ bs)
+={distributiva ^ respecto al existe}
+y = x ^ (∃bs :: ys = xs ++ bs) v (∃a,as,bs :: y = a ^ ys = as ++ (x:xs) ++ bs)
+={intercambio rango y termino}
+y = x ^ (∃bs :: ys = xs ++ bs) v (∃a,as,bs : y = a : ys = as ++ (x:xs) ++ bs)
+={rango unitario}
+y = x ^ (∃bs :: ys = xs ++ bs) v (∃as,bs :: ys = as ++ (x:xs) ++ bs)
+={H.I. = P.(x:xs).ys}
+y = x ^ (∃bs :: ys = xs ++ bs) v (P (x:xs) ys)
+={modularizacion}
+(y = x ^ Q.xs.ys) v (P (x:xs) ys)
 
+donde Q xs ys = (∃bs :: ys = xs ++ bs)
+derivamos Q:
+    · Caso base: Q [] ys
+(∃bs :: ys = [] ++ bs)
+={def ++}
+(∃bs :: ys = bs)
+={intercambio}
+(∃bs : ys = bs : True)
+={termino constante}
+True
 
+    · Caso 1: Q (x:xs) []
+(∃bs :: [] = (x:xs) ++ bs)
+={def = para listas}
+(∃bs :: False)
+={termino constante}
+False
 
+    · Caso inductivo: Q (x:xs) (y:ys)
+(∃bs :: (y:ys) = (x:xs) ++ bs)
+={def ++}
+(∃bs :: (y:ys) = x:(xs ++ bs))
+={def = en listas}
+(∃bs :: y=x ^ ys = xs ++ bs)
+={distributiva ^ respecto al existe}
+y = x ^ (∃bs :: ys = xs ++ bs)
+={H.I.}
+y = x ^ Q xs ys
 
+programa:
+P : [Num] -> [Num] -> Bool
+P [] ys = True
+P (x:xs) [] = False
+P (x:xs) (y:ys) = ((x == y) && Q xs ys) || P (x:xs) ys
+
+Q : [Num] -> [Num] -> Bool
+Q [] ys = True
+Q (x:xs) [] = False
+Q (x:xs) (y:ys) = (x == y) && Q xs ys
+
+-- dadas dos listas determina si la primera es subsegmento de la segunda.
+f1 :: Eq a => [a] -> [a] -> Bool
+f1 [] ys = True
+f1 (x:xs) [] = False
+f1 (x:xs) (y:ys) = ((x == y) && f2 xs ys) || f1 (x:xs) ys
+
+f2 :: Eq a => [a] -> [a] -> Bool
+f2 [] ys = True
+f2 (x:xs) [] = False
+f2 (x:xs) (y:ys) = (x == y) && f2 xs ys
 
 Ejercicio 10. Especificar y derivar una funcion que dada una lista de números
 calcula el promedio de la misma, recorriendo la lista una sola vez
