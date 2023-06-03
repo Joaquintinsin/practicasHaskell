@@ -337,7 +337,7 @@ x min f xs
 
 Ejercicio 7. Especificar y derivar una funcion que dada una lista determine si
 existe un elemento en ella que sea igual a la suma del resto de los elementos de la lista.
-f xs = (exists i : 0 <= i < #xs : xs.i = (sum xs - xs.i))
+f xs = (exists i : 0 <= i < #xs : xs.i = (sum xs - xs.i))   --está bien especificado
 
     · Caso base: f []
 (exists i : 0 <= i < #[] : [].i = (sum [] - [].i))
@@ -350,6 +350,73 @@ False
 
     · Caso inductivo: f (x:xs)
 (exists i : 0 <= i < #(x:xs) : (x:xs).i = (sum (x:xs) - (x:xs).i))
+={def #}
+(exists i : 0 <= i < 1 + #xs : (x:xs).i = (sum (x:xs) - (x:xs).i))
+={logica}
+(exists i : 0 = i v 1 <= i < 1 + #xs : (x:xs).i = (sum (x:xs) - (x:xs).i))
+={particion de rango}
+(exists i : 0 = i : (x:xs).i = (sum (x:xs) - (x:xs).i))
+v
+(exists i : 1 <= i < 1 + #xs : (x:xs).i = (sum (x:xs) - (x:xs).i))
+={rango unitario}
+(x:xs).0 = (sum (x:xs) - (x:xs).0) v (exists i : 1 <= i < 1 + #xs : (x:xs).i = (sum (x:xs) - (x:xs).i))
+={def index}
+(x = sum (x:xs) - x) v (exists i : 1 <= i < 1 + #xs : (x:xs).i = (sum (x:xs) - (x:xs).i))
+={cambio variable [i := j+1]}
+(x = sum (x:xs) - x) v (exists j : 1 <= j+1 < 1 + #xs : (x:xs).(j+1) = (sum (x:xs) - (x:xs).(j+1)))
+={aritmetica}
+(x = sum (x:xs) - x) v (exists j : 0 <= j < #xs : (x:xs).(j+1) = (sum (x:xs) - (x:xs).(j+1)))
+={def index}
+(x = sum (x:xs) - x) v (exists j : 0 <= j < #xs : xs.j = (sum (x:xs) - xs.j))
+={def sum}
+(x = x + sum xs - x) v (exists j : 0 <= j < #xs : xs.j = x + sum xs - xs.j))
+={aritmetica}
+(x = sum xs) v (exists j : 0 <= j < #xs : xs.j = x + sum xs - xs.j))
+Continuacion en *
+
+    Defino g : g xs a = (exists i : 0 <= i < #xs : xs.i = a + sum xs - xs.i)
+        · Caso base: g [] a
+    (exists i : 0 <= i < #[] : [].i = a + sum [] - [].i)
+    ={def #}
+    (exists i : 0 <= i < 0 : [].i = a + sum [] - [].i)
+    ={logica}
+    (exists i : False : [].i = a + sum [] - [].i)
+    ={rango vacio}
+    False
+
+        · Caso inductivo : g (x:xs) a
+    (exists i : 0 <= i < #(x:xs) : (x:xs).i = a + sum (x:xs) - (x:xs).i)
+    ={def #}
+    (exists i : 0 <= i < 1 + #xs : (x:xs).i = a + sum (x:xs) - (x:xs).i)
+    ={logica}
+    (exists i : 0 = i v 1 <= i < 1 + #xs : (x:xs).i = a + sum (x:xs) - (x:xs).i)
+    ={particion de rango}
+    (exists i : 0 = i : (x:xs).i = a + sum (x:xs) - (x:xs).i)
+    v
+    (exists i : 1 <= i < 1 + #xs : (x:xs).i = a + sum (x:xs) - (x:xs).i)
+    ={rango unitario}
+    ((x:xs).0 = a + sum (x:xs) - (x:xs).0) v (exists i : 1 <= i < 1 + #xs : (x:xs).i = a + sum (x:xs) - (x:xs).i)
+    ={def index}
+    (x = a + sum (x:xs) - x) v (exists i : 1 <= i < 1 + #xs : (x:xs).i = a + sum (x:xs) - (x:xs).i)
+    ={cambio variable [i := j+1]}
+    (x = a + sum (x:xs) - x) v (exists j : 1 <= j+1 < 1 + #xs : (x:xs).(j+1) = a + sum (x:xs) - (x:xs).(j+1))
+    ={aritmetica}
+    (x = a + sum (x:xs) - x) v (exists j : 0 <= j < #xs : (x:xs).(j+1) = a + sum (x:xs) - (x:xs).(j+1))
+    ={def index}
+    (x = a + sum (x:xs) - x) v (exists j : 0 <= j < #xs : xs.j = a + sum (x:xs) - xs.j)
+    ={def sum}
+    (x = a + x + sum xs - x) v (exists j : 0 <= j < #xs : xs.j = a + x + sum xs - xs.j)
+    ={aritmetica}
+    (x = a + sum xs) v (exists j : 0 <= j < #xs : xs.j = a + x + sum xs - xs.j)
+    ={H.I.}
+    (x = a + sum xs) v g xs (a+x)
+
+    g [] a = False
+    g (x:xs) a = x == a + sum xs v g xs (n+x)
+
+*Continuacion def f
+={def g}
+(x = sum xs) v g (x:xs) 0
 
 
     Especificacion de sum: 
@@ -384,15 +451,55 @@ False
     ={H.I.}
     x + sum xs
 
-* Ejercicio 8. Dada f : Nat -> Bool y suponiendo ∃n : 0 ≤ n : f.n, especificar
-y derivar una funcion que encuentre el minimo natural x tal que f.x.
+* Ejercicio 8. Dada f : Nat -> Bool y suponiendo (∃n : 0 ≤ n : f.n), especificar
+y derivar una funcion que encuentre el minimo natural x tal que f.x. 
+--Pagina 193 o 173 libro derivar una funcion (g) que satisface f
 
 
 
 
 Ejercicio 9. Derivar un programa usando la siguiente especificacion:
-P xs.ys = (∃as, bs :: ys = as + +xs + +bs),
+P xs.ys = (∃as, bs :: ys = as ++ xs ++ bs),
 que dadas dos listas determina si la primera es subsegmento de la segunda.
+-- partir un rango en subsegmentos quiere decir pensar en que es vacio o no es vacio
+
+P xs.ys = (∃as, bs :: ys = as ++ xs ++ bs)
+
+    · Caso base: P [] ys
+(∃as, bs :: ys = as ++ [] ++ bs)
+={def ++}
+(∃as, bs :: ys = as ++ bs)
+={logica}
+(∃as, bs : as = [] v as /= [] : ys = as ++ bs)
+={particion de rango}
+(∃as, bs : as = [] : ys = as ++ bs) v (∃as, bs : as /= [] : ys = as ++ bs)
+={anidamiento}
+(∃bs : : (∃as : as = [] : ys = as ++ bs)) v (∃bs : : (∃as : as /= [] : ys = as ++ bs))
+={rango unitario}
+(∃bs : : ys = [] ++ bs) v (∃bs : : ys = (a:as) ++ bs)
+={def ++}
+(∃bs : : ys = bs) v (∃bs : : ys = (a:as) ++ bs)
+={intercambio bool}
+(∃bs : ys = bs : True) v (∃bs : : ys = (a:as) ++ bs)
+={termino constante}
+True v (∃bs : : ys = (a:as) ++ bs)
+={logica}
+True
+
+    · Caso base: P (x:xs) []
+(∃as, bs :: [] = as ++ (x:xs) ++ bs)
+={logica}
+(∃as, bs :: [] = as ^ [] = (x:xs) ^ [] = bs)
+={logica}
+(∃as, bs :: [] = as ^ False ^ [] = bs)
+={logica}
+(∃as, bs :: False)
+={termino constante}
+False
+
+    · Caso inductivo: P (x:xs) (y:ys)
+(∃as, bs :: (y:ys) = as ++ (x:xs) ++ bs)
+
 
 
 
@@ -400,8 +507,46 @@ que dadas dos listas determina si la primera es subsegmento de la segunda.
 Ejercicio 10. Especificar y derivar una funcion que dada una lista de números
 calcula el promedio de la misma, recorriendo la lista una sola vez
 (Ayuda: utilizar tuplas).
+f xs = (sumatoria i : 0 <= i < #xs : xs.i)
+g xs = (contatoria i : 0 <= i < #xs : i)
+h xs = (f xs , g xs)
+    f xs / g xs
 
+    · Caso base : h [x] = (f [x] , g [x])
+={def h}
+f [x] / g [x]
+={def f, def g}
+sumatoria [x] / contatoria [x]
+={def sumatoria , def contatoria}
+x / 1
+={def h}
+(x,1)
 
+    · Caso inductivo : h (x:xs) = (f (x:xs) , g (x:xs))
+={def h}
+f (x:xs) / g (x:xs)
+={def f, def g}
+sum (x:xs) / contatoria (x:xs)
+={def sum, def contatoria}
+(x + sum xs) / (1 + contatoria xs)
+={def h}
+(x + sum xs , 1 + contatoria xs)
+={introducción a y b}
+[a := sum xs , b := contatoria xs]
+(x + a , 1 + b)
+={igualdad de pares}
+[(a,b) = (sum xs, contatoria xs)]
+(x + a , 1 + b)
+={H.I.}
+[(a,b) = h xs]
+(x + a , 1 + b)
+
+h [x] = (x,1)
+h (x:xs) = (x+a , 1+b)
+    where
+        (a,b) = h xs
+
+h' xs = fst (h xs)
 
 
 * Ejercicio 11. Implementar todas las funciones obtenidas de las derivaciones
