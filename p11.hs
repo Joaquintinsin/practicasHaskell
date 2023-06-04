@@ -234,8 +234,71 @@ Demostracion del do por medio del teorema:
 ={logica}
 True
 
-    · Postcondición: 
+    · Postcondición: I ^ not B0 ^ ... ^ not Bn -> Q
+x ≤ N ^ not (x <> N) -> x = N
+={logica}
+x ≤ N ^ x = N -> x = N
+={precondicion}
+True
 
+    · Invariante: {Bi ^ I}.Si.{I}
+{(x <> N) ^ x ≤ N} x := x + 1 {x ≤ N}
+={def wp}
+[(x <> N) ^ x ≤ N -> {wp} x := x + 1 {x ≤ N}]
+={def wp asignacion}
+[(x <> N) ^ x ≤ N -> x+1 ≤ N]
+={logica}
+[x < N -> x+1 ≤ N]
+={aritmetica}
+[x < N -> x ≤ N - 1]
+={aritmetica}
+[x < N -> x < N]
+={logica}
+True
+
+    Correción parcial demostrada.
+    Dem correción total:
+v = {N - x}
+    · Variante (a): I ^ Bi -> v ≥ 0
+x ≤ N ^ x <> N -> N - x ≥ 0
+={aritmetica}
+x ≤ N ^ x <> N -> N ≥ x
+={precondiciion}
+x ≤ N ^ x <> N -> N > x
+={logica}
+x < N -> N > x
+={logica}
+True
+
+    · Variante (b): {I ^ Bi ^ v = A}.Si.{v < A}
+{x ≤ N ^ x <> N ^ N - x = 0} x := x + 1 {N - x < 0}
+={def wp}
+[{x ≤ N ^ x <> N ^ N - x = 0} -> {wp} x := x + 1 {N - x < 0}]
+={wp asignacion}
+[{x ≤ N ^ x <> N ^ N - x = 0} -> {N - (x + 1) < 0}]
+={logica}
+[{x < N ^ N - x = 0} -> {N - (x + 1) < 0}]
+={aritmetica}
+[{x < N ^ N - x = 0} -> {N - x < 1}]
+    desde acá, en (*) hay otra forma
+={aritmetica}
+[{0 < N - x ^ N - x = 0} -> {N - x < 1}]
+={precondicion}
+[{0 < N - x ^ N - x = 0} -> {0 < 1}]
+={logica}
+[{0 < N - x ^ N - x = 0} -> True]
+={logica}
+True
+
+(*)
+={leibniz}
+[{0 < 0} -> {N - x < 1}]
+={logica}
+[False -> {N - x < 1}]
+={logica}
+True
+
+    Correción total demostrada.
 
 Ejercicio 5. Dado el siguiente programa:
 con N : Nat
@@ -243,10 +306,12 @@ var n : Nat; r : Bool
 var A: array array:[0..N) of Nat
     {N > 0}
     n,r := 0, True
-    {r =< ∀i : 0 ≤ i < n : A.i = A.(N - i - 1) > ∧ 0 ≤ n ≤ N >}
+    {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }
     do n <> N
      n,r := n + 1, r and A.n = A.(N - n -1)
     od
-    {r =< ∀i : 0 ≤ i < N : A.i = A.(N - i - 1) >}
+    {r = <∀i : 0 ≤ i < N : A.i = A.(N - i - 1)> }
 
 ¿Qué hace este algoritmo? Demostrar la corrección del mismo.
+    Es un skip. La precondicion es la misma que la postcondicion
+
