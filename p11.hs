@@ -37,24 +37,24 @@ wp = { qy + r = x }
        a := a ≡ b;
        b := a ≡ b;
        a := a ≡ b;
-       { (a≡ B) ∧ (b≡ A) }
+       { (a≡ B) ^ (b≡ A) }
 
 =wp de la composicion {wp}.S;T.{Q} = {wp}.S.{{wp}.T.{Q}}
-{wp} a := a ≡ b {{wp} b := a ≡ b {{wp} a := a ≡ b { (a ≡ B) ∧ (b ≡ A) }}}
+{wp} a := a ≡ b {{wp} b := a ≡ b {{wp} a := a ≡ b { (a ≡ B) ^ (b ≡ A) }}}
 =wp de la asignacion {wp}.(x:=E).{Q} = {Q(x:=E)}
-{wp} a := a ≡ b {{wp} b := a ≡ b {(a ≡ b ≡ B) ∧ (b ≡ A) }}
+{wp} a := a ≡ b {{wp} b := a ≡ b {(a ≡ b ≡ B) ^ (b ≡ A) }}
 =wp de la asignacion
-{wp} a := a ≡ b {{(a ≡ (a ≡ b) ≡ B) ∧ ((a ≡ b) ≡ A) }}
+{wp} a := a ≡ b {{(a ≡ (a ≡ b) ≡ B) ^ ((a ≡ b) ≡ A) }}
 =wp de la asignacion
-{{((a ≡ b) ≡ ((a ≡ b) ≡ b) ≡ B) ∧ (((a ≡ b) ≡ b) ≡ A) }}
+{{((a ≡ b) ≡ ((a ≡ b) ≡ b) ≡ B) ^ (((a ≡ b) ≡ b) ≡ A) }}
 =asociatividad y conmutativa equivalencia
-{{(a ≡ a) ≡ (b ≡ b) ≡ b ≡ B ∧ a ≡ (b ≡ b) ≡ A}}
+{{(a ≡ a) ≡ (b ≡ b) ≡ b ≡ B ^ a ≡ (b ≡ b) ≡ A}}
 =existencia neutro
-{{True ≡ True ≡ b ≡ B ∧ a ≡ True ≡ A}}
+{{True ≡ True ≡ b ≡ B ^ a ≡ True ≡ A}}
 =existencia neutro
-{b ≡ B ∧ a ≡ A}
+{b ≡ B ^ a ≡ A}
 
-wp = {b ≡ B ∧ a ≡ A}
+wp = {b ≡ B ^ a ≡ A}
 
 
 Ejercicio 2. Calcular expresiones E tal que:
@@ -110,30 +110,30 @@ E = q + y
 
 
 * Ejercicio 3. Demostrar la corrección del siguiente programa:
-    {x = A ∧ y = B}
+    {x = A ^ y = B}
     x := x - y;
     y := x + y;
     x := y - x;
-    {x = B ∧ y = A}
+    {x = B ^ y = A}
 
 =def wp : {P} S {Q} ≡ [P -> wp.S.Q]
-[(x = A ∧ y = B) -> {wp} x := x - y; y := x + y; x := y - x; {x = B ∧ y = A}]
+[(x = A ^ y = B) -> {wp} x := x - y; y := x + y; x := y - x; {x = B ^ y = A}]
 =def wp composicion
-[(x = A ∧ y = B) -> {wp} x := x - y; y := x + y; {{wp} x := y - x {x = B ∧ y = A}}]
+[(x = A ^ y = B) -> {wp} x := x - y; y := x + y; {{wp} x := y - x {x = B ^ y = A}}]
 =def wp asignacion
-[(x = A ∧ y = B) -> {wp} x := x - y; y := x + y; {y - x = B ∧ y = A}]
+[(x = A ^ y = B) -> {wp} x := x - y; y := x + y; {y - x = B ^ y = A}]
 =def wp composicion
-[(x = A ∧ y = B) -> {wp} x := x - y; {{wp} y := x + y {y - x = B ∧ y = A}}]
+[(x = A ^ y = B) -> {wp} x := x - y; {{wp} y := x + y {y - x = B ^ y = A}}]
 =def wp asignacion
-[(x = A ∧ y = B) -> {wp} x := x - y; {(x + y) - x = B ∧ (x + y) = A}]
+[(x = A ^ y = B) -> {wp} x := x - y; {(x + y) - x = B ^ (x + y) = A}]
 =def wp asignacion
-[(x = A ∧ y = B) -> {((x - y) + y) - (x - y) = B ∧ ((x - y) + y) = A}]
+[(x = A ^ y = B) -> {((x - y) + y) - (x - y) = B ^ ((x - y) + y) = A}]
 =asociatividad
-[(x = A ∧ y = B) -> {x - y + y - (x - y) = B ∧ (x - y + y) = A}]
+[(x = A ^ y = B) -> {x - y + y - (x - y) = B ^ (x - y + y) = A}]
 =existencia opuesto, prop distributiva
-[(x = A ∧ y = B) -> {x - x + y = B ∧ x = A}]
+[(x = A ^ y = B) -> {x - x + y = B ^ x = A}]
 =existencia opuesto
-[(x = A ∧ y = B) -> { y = B ∧ x = A}]
+[(x = A ^ y = B) -> { y = B ^ x = A}]
 ={logica}
 True
 
@@ -167,31 +167,31 @@ b. {True}
    if x ≥ y -> x := x + 1
    [] x ≤ y -> y := y - x
    fi
-   {x ≥ 0 ∧ y ≥ 0}
+   {x ≥ 0 ^ y ≥ 0}
 
-=def wp
+={def wp}
 [P -> {wp}.S.{Q}]
-=reemplazo
-[True -> {wp}. x,y := y*y, x*x ; if .{x ≥ 0 ∧ y ≥ 0}]
-=logica , def wp composicion
-{wp}. x,y := y*y, x*x ; {{wp}.if.{x ≥ 0 ∧ y ≥ 0}}
-=def wp if
-{wp}. x,y := y*y, x*x ; {(x ≥ y v x ≤ y) ^ (x ≥ y -> {wp}. x := x + 1 .{x ≥ 0 ∧ y ≥ 0}) ^ (x ≤ y -> {wp}. y := y - x .{x ≥ 0 ∧ y ≥ 0})}
-=logica , def wp asignacion x2
-{wp}. x,y := y*y, x*x ; {True ^ (x ≥ y -> {x + 1 ≥ 0 ∧ y ≥ 0}) ^ (x ≤ y -> {x ≥ 0 ∧ y - x ≥ 0})}
-=logica: existencia neutro ^
-{wp}. x,y := y*y, x*x ; {(x ≥ y -> {x + 1 ≥ 0 ∧ y ≥ 0}) ^ (x ≤ y -> {x ≥ 0 ∧ y - x ≥ 0})}
-=def wp asignacion
-{((y*y) ≥ (x*x) -> {(y*y) + 1 ≥ 0 ∧ (x*x) ≥ 0}) ^ ((y*y) ≤ (x*x) -> {(y*y) ≥ 0 ∧ (x*x) - (y*y) ≥ 0})}
-=logica: precondicion & transitividad ≥
-{True ^ ((y*y) ≤ (x*x) -> {(y*y) ≥ 0 ∧ (x*x) - (y*y) ≥ 0})}
-=logica: existencia neutro ^
-{((y*y) ≤ (x*x) -> {(y*y) ≥ 0 ∧ (x*x) - (y*y) ≥ 0})}
-=aritmetica
-{(0 ≤ (x*x) - (y*y) -> {(y*y) ≥ 0 ∧ (x*x) - (y*y) ≥ 0})}
-=logica: precondicion
-{(y*y) ≥ 0 ∧ True}
-=logica: existencia neutro ^ . prop potencia en R
+={reemplazo}
+[True -> {wp}. x,y := y*y, x*x ; if .{x ≥ 0 ^ y ≥ 0}]
+={logica , def wp composicion}
+{wp}. x,y := y*y, x*x ; {{wp}.if.{x ≥ 0 ^ y ≥ 0}}
+={def wp if}
+{wp}. x,y := y*y, x*x ; {(x ≥ y v x ≤ y) ^ (x ≥ y -> {wp}. x := x + 1 .{x ≥ 0 ^ y ≥ 0}) ^ (x ≤ y -> {wp}. y := y - x .{x ≥ 0 ^ y ≥ 0})}
+={logica , def wp asignacion x2}
+{wp}. x,y := y*y, x*x ; {True ^ (x ≥ y -> {x + 1 ≥ 0 ^ y ≥ 0}) ^ (x ≤ y -> {x ≥ 0 ^ y - x ≥ 0})}
+={logica: existencia neutro ^}
+{wp}. x,y := y*y, x*x ; {(x ≥ y -> {x + 1 ≥ 0 ^ y ≥ 0}) ^ (x ≤ y -> {x ≥ 0 ^ y - x ≥ 0})}
+={def wp asignacion}
+{((y*y) ≥ (x*x) -> {(y*y) + 1 ≥ 0 ^ (x*x) ≥ 0}) ^ ((y*y) ≤ (x*x) -> {(y*y) ≥ 0 ^ (x*x) - (y*y) ≥ 0})}
+={logica: precondicion & transitividad ≥}
+{True ^ ((y*y) ≤ (x*x) -> {(y*y) ≥ 0 ^ (x*x) - (y*y) ≥ 0})}
+={logica: existencia neutro ^}
+{((y*y) ≤ (x*x) -> {(y*y) ≥ 0 ^ (x*x) - (y*y) ≥ 0})}
+={aritmetica}
+{(0 ≤ (x*x) - (y*y) -> {(y*y) ≥ 0 ^ (x*x) - (y*y) ≥ 0})}
+={logica: precondicion}
+{(y*y) ≥ 0 ^ True}
+={logica: existencia neutro ^ . prop potencia en R}
 True
 
 
@@ -222,6 +222,12 @@ d. {N ≥ 0}
    do x <> N -> x := x + 1
    od
    {x = N}
+
+## como cota: tomar algo relacionado con el programa de manera tal que la accion achique la cota.
+## elegir una cota entendiendo lo que va haciendo el programa y que acciones va haciendo para que yo tome eso
+## como cota. preg orientativas: que variable itero? hasta donde la itero?
+## invariante asociado a la postcondicion siempre
+## el invariante es un predicado que vale antes de entrar al ciclo, durante y al finalizar el ciclo.
 
 I = {x ≤ N}
 Demostracion del do por medio del teorema:
@@ -256,14 +262,16 @@ True
 ={logica}
 True
 
-    Correción parcial demostrada.
-    Dem correción total:
+Correción parcial demostrada.
+
+Dem correción total:
 v = {N - x}
     · Variante (a): I ^ Bi -> v ≥ 0
 x ≤ N ^ x <> N -> N - x ≥ 0
 ={aritmetica}
 x ≤ N ^ x <> N -> N ≥ x
-={precondiciion}
+    Podria ser True directamente porque p ^ q -> p = True
+={precondicion}
 x ≤ N ^ x <> N -> N > x
 ={logica}
 x < N -> N > x
@@ -271,22 +279,24 @@ x < N -> N > x
 True
 
     · Variante (b): {I ^ Bi ^ v = A}.Si.{v < A}
-{x ≤ N ^ x <> N ^ N - x = 0} x := x + 1 {N - x < 0}
+{x ≤ N ^ x <> N ^ N - x = A} x := x + 1 {N - x < A}
 ={def wp}
-[{x ≤ N ^ x <> N ^ N - x = 0} -> {wp} x := x + 1 {N - x < 0}]
+[{x ≤ N ^ x <> N ^ N - x = A} -> {wp} x := x + 1 {N - x < A}]
 ={wp asignacion}
-[{x ≤ N ^ x <> N ^ N - x = 0} -> {N - (x + 1) < 0}]
+[{x ≤ N ^ x <> N ^ N - x = A} -> {N - (x + 1) < A}]
 ={logica}
-[{x < N ^ N - x = 0} -> {N - (x + 1) < 0}]
+[{x < N ^ N - x = A} -> {N - (x + 1) < A}]
 ={aritmetica}
-[{x < N ^ N - x = 0} -> {N - x < 1}]
+[{x < N ^ N - x = A} -> {N - x < A + 1}]
     desde acá, en (*) hay otra forma
 ={aritmetica}
-[{0 < N - x ^ N - x = 0} -> {N - x < 1}]
+[{0 < N - x ^ N - x = A} -> {N - x < A + 1}]
 ={precondicion}
-[{0 < N - x ^ N - x = 0} -> {0 < 1}]
+[{0 < N - x ^ N - x = A} -> {N - x < N - x + 1}]
+={aritmetica}
+[{0 < N - x ^ N - x = A} -> {0 < 1}]
 ={logica}
-[{0 < N - x ^ N - x = 0} -> True]
+[{0 < N - x ^ N - x = A} -> True]
 ={logica}
 True
 
@@ -298,20 +308,128 @@ True
 ={logica}
 True
 
-    Correción total demostrada.
+Correción total demostrada.
+
+
 
 Ejercicio 5. Dado el siguiente programa:
 con N : Nat
 var n : Nat; r : Bool
 var A: array array:[0..N) of Nat
     {N > 0}
-    n,r := 0, True
-    {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }
-    do n <> N
-     n,r := n + 1, r and A.n = A.(N - n -1)
-    od
+     n,r := 0, True
+        I = {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }
+     do n <> N
+      n,r := n + 1, r and A.n = A.(N - n -1)
+     od
     {r = <∀i : 0 ≤ i < N : A.i = A.(N - i - 1)> }
 
 ¿Qué hace este algoritmo? Demostrar la corrección del mismo.
-    Es un skip. La precondicion es la misma que la postcondicion
+    Compara capicuamente los elementos de un arreglo que sean todos iguales
 
+## recorrer una secuencia: remplazar cte por variable. la cte que remplazo es el limite hasta donde llega la sec
+
+Demostracion parcial:
+1) Inicializacion: {P} S {I}
+=def wp
+[P -> {wp} S {I}]
+=def P, S, I
+[{N > 0} -> {wp} n,r := 0, True {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }]
+=def wp asignacion
+[{N > 0} -> True = <∀i : 0 ≤ i < 0 : A.i = A.(N - i - 1)> ^ 0 ≤ 0 ≤ N]
+=rango vacio, aritmetica
+[{N > 0} -> True = True ^ 0 ≤ N]
+=def =
+[{N > 0} -> True ^ 0 ≤ N]
+=existencia neutro ^ , aritmetica
+[{N > 0} -> 0 < N v 0 = N]
+=precondicion
+True
+
+2) Postcondicion: I ^ ~B0 ^ ... ^ ~Bn -> Q
+=def I, B0, Q
+{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N } ^ ~(n <> N) 
+    -> {r = <∀i : 0 ≤ i < N : A.i = A.(N - i - 1)> }
+=def ~ , asoc y conm ^
+{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N } ^ n = N 
+    -> {r = <∀i : 0 ≤ i < N : A.i = A.(N - i - 1)> }
+=leibniz
+{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N } ^ n = N 
+    -> {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> }
+=asociativa de ^
+r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ (0 ≤ n ≤ N ^ n = N) 
+    -> {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> }
+=logica
+r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ N 
+    -> {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> }
+=logica p ^ q -> p = true
+True
+
+3) Invariante: {Bi ^ I}.Si.{I}
+{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    n,r := n + 1, r and A.n = A.(N - n -1)
+{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }
+=def wp
+[{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    -> {wp}.n,r := n + 1, r and A.n = A.(N - n -1).{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }]
+=def wp asignacion
+[{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    -> {(r ^ A.n = A.(N - n -1)) = <∀i : 0 ≤ i < n + 1 : A.i = A.(N - i - 1)> ^ 0 ≤ n + 1 ≤ N }]
+=rango unitario
+[{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    -> {(r ^ <∀i : i = n : A.i = A.(N - i - 1)> = <∀i : 0 ≤ i < n + 1 : A.i = A.(N - i - 1)> ^ 0 ≤ n + 1 ≤ N }]
+=antecedente : r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)>
+[{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    -> {(<∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ <∀i : i = n : A.i = A.(N - i - 1)> = <∀i : 0 ≤ i < n + 1 : A.i = A.(N - i - 1)> ^ 0 ≤ n + 1 ≤ N }]
+=particion de rango al reves
+[{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    -> {(<∀i : 0 ≤ i ≤ n : A.i = A.(N - i - 1)> = <∀i : 0 ≤ i < n + 1 : A.i = A.(N - i - 1)> ^ 0 ≤ n + 1 ≤ N }]
+=logica
+[{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    -> {(<∀i : 0 ≤ i ≤ n : A.i = A.(N - i - 1)> = <∀i : 0 ≤ i ≤ n : A.i = A.(N - i - 1)> ^ 0 ≤ n + 1 ≤ N }]
+=def igualdad
+[{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    -> True ^ 0 ≤ n + 1 ≤ N }]
+=existencia neutro ^
+[{n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
+    -> 0 ≤ n + 1 ≤ N }]
+=logica
+[{{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n < N }}
+    -> 0 ≤ n + 1 ≤ N }]
+=monotonia de relacion de orden (0 ≤ n < N -> 0 ≤ n + 1 ≤ N)
+True
+
+Correccion parcial demostrada.
+
+Correccion total:
+    · v = {N-n}
+4) Variante (a): I ^ Bi -> v ≥ 0
+r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N ^ n <> N -> N-n ≥ 0
+=logica, aritmetica
+r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n < N -> N ≥ n
+=logica
+r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ (0 ≤ n ^ n < N) -> (N > n v N = n)
+=logica q ^ s ^ p -> p v r = True
+True
+
+5) Variante (b) : {I ^ Bi ^ v=A} Si {v<A}
+{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N ^ n <> N ^ N-n = A} 
+    n,r := n + 1, r and A.n = A.(N - n -1)
+{N-n<A}
+=logica
+{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n < N ^ N-n = A} 
+    n,r := n + 1, r and A.n = A.(N - n -1)
+{N-n<A}
+=def wp
+[{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n < N ^ N-n = A} 
+    -> {wp} n,r := n + 1, r and A.n = A.(N - n -1) {N-n<A}]
+=def wp asignacion
+[{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n < N ^ N-n = A} -> {N-n-1<A}]
+=leibniz
+[{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n < N ^ N-n = A} -> {A-1<A}]
+=aritmetica
+[{r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n < N ^ N-n = A} -> True]
+=logica
+True
+
+Correcion total demostrada.

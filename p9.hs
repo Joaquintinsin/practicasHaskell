@@ -149,23 +149,41 @@ f5a xs = product [xs!!i | i <- [0..(length xs)-1] , esPrimo(xs!!i)]
 f5b :: Eq a => [a] -> [a] -> Bool
 f5b xs ys = or[ys == bs | (as,bs,cs) <- split3 xs]
 
-definir split3 ...
-
 --  c) La especificación del ejercicio 3(d).
 --f xs ys : (exists as : True : xs = (as++ys))
 f5c :: Eq a => [a] -> [a] -> Bool
 f5c xs ys = or[ys==cs | (as,cs) <- split2 xs]
 
-split2 definido en practicas anteriores. lo tengo que buscar
-
 {-  d) La siguiente especificación: Dada una lista de números, calcular el valor de subsegmento
 de suma máxima. -}
 --f xs : (Max as : (exists bs,cs : True : xs = (bs++as++cs)) : Sum (as) )
 f5d :: [Int] -> Int
-f5d xs = maxLists [sum as | xs == bs++as++cs]
-    where -- verificar que esta parte anda bien así
-        as <- xs
-        bs <- xs
-        cs <- xs
+f5d xs = maxLists [sum as | (bs,as,cs) <- split3 xs]
 
-definir max para listas de nros
+    --Según chat:
+    data Result = Result [Int] Int
+    
+    findMaxAndSum :: [Int] -> Result
+    findMaxAndSum xs = Result maxSubList sumSubList
+      where
+        subLists = [ (bs, as, cs) | bs <- segments, as <- segments, cs <- segments ]
+        segments = tail (init (segmentsOf xs))
+        sumSubList = maximum [ sum as | (bs, as, cs) <- subLists ]
+        maxSubList = maximumBy (comparing length) [ as | (bs, as, cs) <- subLists, xs == bs ++ as ++ cs ]
+    
+    segmentsOf :: [a] -> [[a]]
+    segmentsOf [] = [[]]
+    segmentsOf (x:xs) = [x:rest | rest <- ([] : segmentsOf xs)] ++ segmentsOf xs
+
+split3 :: [a] -> [([a], [a], [a])]
+split3 xs = [(take i xs, take (j - i) (drop i xs), drop j xs) | i <- [0..length xs], j <- [i..length xs]]
+
+split2 :: [a] -> [([a],[a])]
+split2 xs = [(take i xs,drop i xs) | i <- [0..length xs]]
+
+{- anda mal. Necesario para f5d
+maxLists :: [Int] -> [Int] -> Int
+maxLists xs ys | sum xs > sum ys = sum xs
+               | otherwise = sum ys
+
+definir max para listas de nros -}
