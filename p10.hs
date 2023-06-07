@@ -631,6 +631,3 @@ h' xs = fst (h xs)
 
 * Ejercicio 11. Implementar todas las funciones obtenidas de las derivaciones
 dadas en el téorico y en el practico.
-
-
-
