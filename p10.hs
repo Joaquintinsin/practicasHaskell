@@ -7,23 +7,24 @@ split3 xs = [(as,bs,cs) | (as,bs) <- split2 xs , (bs,cs) <- split2 bs]
 -- split3 xs = [(take i as, take j bs, drop j cs) | i <- [0..length xs] , j <- [0..length xs]]
 
 Practico 10: Induccion - Derivaciones
-Ejercicio 1. Demostrar que la concatenacion de listas es asociativa:
-#######################################################
-Probar: (xs ++ ys) ++ zs = xs ++ (ys ++ zs)
+#######################################################################
+#Ejercicio 1. Demostrar que la concatenacion de listas es asociativa: #
+#######################################################################
+# Probar: (xs ++ ys) ++ zs = xs ++ (ys ++ zs)
 
 (++) :: [a] -> [a] -> [a]
 (++) [] ys = ys -- [] ++ ys = ys
 (++) (x:xs) ys = x:(xs++ys)
 La H.I. sale de lo que quiero probar poque es xs, y el caso inductivo es (x:xs)
 
-    · Caso Base: ++.[]
+#    · Caso Base: ++.[]
 ([] ++ ys) ++ zs = [] ++ (ys ++ zs)
 ={def ++}
 ys ++ zs = ys ++ zs
 ={logica}
 True
 
-    · Caso inductivo: ++.(x:xs)
+#    · Caso inductivo: ++.(x:xs)
 ((x:xs) ++ ys) ++ zs = (x:xs) ++ (ys ++ zs)
 ={def ++}
 x:(xs++ys) ++ zs = x:(xs ++ (ys ++ zs))
@@ -32,15 +33,14 @@ x:(xs++ys) ++ zs = x:(xs ++ ys) ++ zs
 ={logica}
 True
 
+####################################################
+#Ejercicio 2. Demostrar las siguientes propiedades #
+####################################################
+#    · map (f o g)xs = (map f) o (map g)xs
+#    · reversa (xs ++ ys) = reversa ys ++ reversa xs
+#    · reversa (reversa xs) = xs
 
-Ejercicio 2. Demostrar las siguientes propiedades
-    · map (f o g)xs = (map f) o (map g)xs
-map (f o g)xs   -#-#-#-     (map f) (map g xs)
-
-    · reversa (xs ++ ys) = reversa ys ++ reversa xs
-    · reversa (reversa xs) = xs
-#######################################################
-Probar: map (f o g) xs = (map f) o (map g) xs
+# Probar: map (f o g) xs = (map f) o (map g) xs
 
 o :: (a -> a) -> (a -> a) -> [a] -> [a]
 o f g [] = []
@@ -50,7 +50,7 @@ map :: (a -> a) -> [a] -> [a]
 map f [] = []
 map f (x:xs) = f x : map f xs
 
-    · Caso base: map.(fog).[]
+#    · Caso base: map.(fog).[]
 map (f o g) [] = (map f) o (map g) []
 ={def map}
 [] = (map f) o (map g) []
@@ -59,7 +59,7 @@ map (f o g) [] = (map f) o (map g) []
 ={logica}
 True
 
-    · Caso inductivo: map.(fog).(x:xs)
+#    · Caso inductivo: map.(fog).(x:xs)
 map (f o g) (x:xs) = (map f) o (map g) (x:xs)
 ={def map}
 (f o g) x : map (f o g) xs = (map f) o (map g) (x:xs)
@@ -71,14 +71,13 @@ map (f o g) (x:xs) = (map f) o (map g) (x:xs)
 (f o g) x : (map f) o (map g) xs = (map f) (g x : map g xs)
 =??? terminar
 
-#######################################################
-Probar: reversa (xs ++ ys) = reversa ys ++ reversa xs
+# Probar: reversa (xs ++ ys) = reversa ys ++ reversa xs
 
 reversa :: [a] -> [a]
 reversa [] = []
 reversa (x:xs) = reversa xs ++ [x]
 
-    · Caso base: rev.[]
+#    · Caso base: rev.[]
 reversa ([] ++ ys) = reversa ys ++ reversa []
 ={def ++}
 reversa ys = reversa ys ++ reversa []
@@ -89,7 +88,7 @@ reversa ys = reversa ys
 ={logica}
 True
 
-    · Caso inductivo: rev.(x:xs)
+#    · Caso inductivo: rev.(x:xs)
 reversa ((x:xs) ++ ys) = reversa ys ++ reversa (x:xs)
 ={def ++}
 reversa (x:(xs++ys)) = reversa ys ++ reversa (x:xs)
@@ -100,14 +99,13 @@ reversa ys ++ reversa xs ++ [x] = reversa ys ++ reversa xs ++ [x]
 ={logica}
 True
 
-#######################################################
-Probar: reversa (reversa xs) = xs
+# Probar: reversa (reversa xs) = xs
 
 reversa :: [a] -> [a]
 reversa [] = []
 reversa (x:xs) = reversa xs ++ [x]
 
-    · Caso base: reversa.[]
+#    · Caso base: reversa.[]
 reversa(reversa []) = []
 ={def reversa}
 reversa [] = []
@@ -116,7 +114,7 @@ reversa [] = []
 ={logica}
 True
 
-    · Caso inductivo: reversa.(x:xs)
+#    · Caso inductivo: reversa.(x:xs)
 reversa (reversa (x:xs)) = (x:xs)
 ={def reversa}
 reversa (reversa xs ++ [x]) = (x:xs)
@@ -131,12 +129,13 @@ reversa [x] ++ xs = (x:xs)
 ={logica}
 True
 
-
-Ejercicio 3. Especificar y derivar la siguiente funcion:
-    f xs dice si todos los elementos son iguales.
+############################################################
+# Ejercicio 3. Especificar y derivar la siguiente funcion: #
+############################################################
+#    f xs dice si todos los elementos son iguales.
 f xs = (forall i : 0 <= i < #xs : xs.0 = xs.i )
 
-    · Caso base: f.[]
+#    · Caso base: f.[]
 (forall i : 0 <= i < #[] : [].0 = [].i )
 ={def #}
 (forall i : 0 <= i < 0 : [].0 = [].i )
@@ -145,7 +144,7 @@ f xs = (forall i : 0 <= i < #xs : xs.0 = xs.i )
 ={rango vacio}
 True
 
-    · Caso inductivo: f.(x:xs)
+#    · Caso inductivo: f.(x:xs)
 (forall i : 0 <= i < #(x:xs) : (x:xs).0 = (x:xs).i )
 ={def #}
 (forall i : 0 <= i < 1 + #xs : (x:xs).0 = (x:xs).i )
@@ -178,7 +177,7 @@ modularizacion.
 
 Sea g xs y = (forall j : 0 <= j < #xs : y = xs.j )
 
-    · Caso base: g [] y
+#    · Caso base: g [] y
 (forall j : 0 <= j < #[] : y = [].j )
 ={def #}
 (forall j : 0 <= j < 0 : y = [].j )
@@ -187,7 +186,7 @@ Sea g xs y = (forall j : 0 <= j < #xs : y = xs.j )
 ={rango vacio}
 True
 
-    · Caso inductivo: g (x:xs) y
+#    · Caso inductivo: g (x:xs) y
 (forall j : 0 <= j < #(x:xs) : y = (x:xs).j )
 ={def #}
 (forall j : 0 <= j < 1 + #xs : y = (x:xs).j )
@@ -218,14 +217,14 @@ La función que se usa queda:
 f [] = True
 f (x:xs) = g (x:xs) x
 
-
-Ejercicio 4. Especificar y derivar una funcion que dada una lista de numeros
-devuelva su producto.
-
+################################################################################
+# Ejercicio 4. Especificar y derivar una funcion que dada una lista de numeros #
+# devuelva su producto.                                                        #
+################################################################################
 f :: Num a => [a] -> a
 f xs = (productoria i : 0 <= i < #xs : xs.i )
 
-    · Caso base: f []
+#    · Caso base: f []
 (productoria i : 0 <= 1 < #[] : [].i )
 ={def #}
 (productoria i : 0 <= 1 < 0 : [].i )
@@ -234,7 +233,7 @@ f xs = (productoria i : 0 <= i < #xs : xs.i )
 ={rango vacío}
 1
 
-    · Caso inductivo: f (x:xs)
+#    · Caso inductivo: f (x:xs)
 (productoria i : 0 <= i < #(x:xs) : (x:xs).i )
 ={def #}
 (productoria i : 0 <= i < 1 + #xs : (x:xs).i )
@@ -253,12 +252,13 @@ x * (productoria j : 0 <= j < #xs : xs.j )
 ={H.I.}
 x * f.xs
 
-
-* Ejercicio 5. Derivar una funcion que dada una lista determina si los elementos 
-estan ordenados de forma creciente.
+####################################################################################
+# * Ejercicio 5. Derivar una funcion que dada una lista determina si los elementos #
+# estan ordenados de forma creciente.                                              #
+####################################################################################
 f xs = (forall i : 0 <= i < #xs - 1 : xs.i <= xs.(i+1))
 
-    · Caso base: f []
+#    · Caso base: f []
 (forall i : 0 <= i < #[] - 1 : [].i <= [].(i+1))
 ={def #}
 (forall i : 0 <= i < 0 - 1 : [].i <= [].(i+1))
@@ -267,12 +267,10 @@ f xs = (forall i : 0 <= i < #xs - 1 : xs.i <= xs.(i+1))
 ={rango vacio}
 True
 
-    · Caso inductivo: f (x:xs)
+#    · Caso inductivo: f (x:xs)
 (forall i : 0 <= i < #(x:xs) - 1 : (x:xs).i <= (x:xs).(i+1))
-
 --particion de rango de una. reviso qué pasa con el primer elemento así saco el (x:xs) de encima y 
 --trabajo con xs
-
 ={def #}
 (forall i : 0 <= i < 1 + #xs - 1 : (x:xs).i <= (x:xs).(i+1))
 ={aritmetica}
@@ -296,17 +294,18 @@ x <= xs.0 ^ (forall j : 0 <= j < #xs - 1 : xs.j <= xs.(j+1))
 ={H.I.}
 x <= xs.0 ^ f xs
 
-Su implementación:
+# Su implementación:
 f :: Ord a => [a] -> Bool
 f [] = True
 f (x:xs) = x <= xs!!0 ^ f xs
 
-
-Ejercicio 6. Sea m :: [Num] -> Num una funcion que devuelve el minimo de una lista dada. 
-Especificar y derivar m.
+############################################################################################
+# Ejercicio 6. Sea m :: [Num] -> Num una funcion que devuelve el minimo de una lista dada. #
+# Especificar y derivar m.                                                                 #
+############################################################################################
 m xs = (Min i : 0 <= i < #xs : xs.i)
 
-    · Caso base: m []
+#    · Caso base: m []
 (Min i : 0 <= i < #[] : [].i)
 ={def #}
 (Min i : 0 <= i < 0 : [].i)
@@ -315,7 +314,7 @@ m xs = (Min i : 0 <= i < #xs : xs.i)
 ={rango vacio}
 +infinity
 
-    · Caso inductivo: m (x:xs)
+#    · Caso inductivo: m (x:xs)
 (Min i : 0 <= i < #(x:xs) : (x:xs).i)
 ={aritmetica}
 (Min i : 0 = i v 1 <= i < #(x:xs) : (x:xs).i)
@@ -336,12 +335,13 @@ x min (Min j: 0 <= j < #xs : xs.j)
 ={H.I.}
 x min f xs
 
-
-Ejercicio 7. Especificar y derivar una funcion que dada una lista determine si
-existe un elemento en ella que sea igual a la suma del resto de los elementos de la lista.
+##############################################################################################
+# Ejercicio 7. Especificar y derivar una funcion que dada una lista determine si             #
+# existe un elemento en ella que sea igual a la suma del resto de los elementos de la lista. #
+##############################################################################################
 f xs = (exists i : 0 <= i < #xs : xs.i = (sum xs - xs.i))   --está bien especificado
 
-    · Caso base: f []
+#    · Caso base: f []
 (exists i : 0 <= i < #[] : [].i = (sum [] - [].i))
 ={def #}
 (exists i : 0 <= i < 0 : [].i = (sum [] - [].i))
@@ -350,7 +350,7 @@ f xs = (exists i : 0 <= i < #xs : xs.i = (sum xs - xs.i))   --está bien especif
 ={rango vacio}
 False
 
-    · Caso inductivo: f (x:xs)
+#    · Caso inductivo: f (x:xs)
 (exists i : 0 <= i < #(x:xs) : (x:xs).i = (sum (x:xs) - (x:xs).i))
 ={def #}
 (exists i : 0 <= i < 1 + #xs : (x:xs).i = (sum (x:xs) - (x:xs).i))
@@ -377,7 +377,7 @@ v
 Continuacion en *
 
     Defino g : g xs a = (exists i : 0 <= i < #xs : xs.i = a + sum xs - xs.i)
-        · Caso base: g [] a
+#        · Caso base: g [] a
     (exists i : 0 <= i < #[] : [].i = a + sum [] - [].i)
     ={def #}
     (exists i : 0 <= i < 0 : [].i = a + sum [] - [].i)
@@ -386,7 +386,7 @@ Continuacion en *
     ={rango vacio}
     False
 
-        · Caso inductivo : g (x:xs) a
+#        · Caso inductivo : g (x:xs) a
     (exists i : 0 <= i < #(x:xs) : (x:xs).i = a + sum (x:xs) - (x:xs).i)
     ={def #}
     (exists i : 0 <= i < 1 + #xs : (x:xs).i = a + sum (x:xs) - (x:xs).i)
@@ -423,7 +423,7 @@ Continuacion en *
 
     Especificacion de sum: 
     sum xs = (Sum i : 0 <= i < #xs : xs.i)
-        · Caso base: sum []
+#        · Caso base: sum []
     (Sum i : 0 <= i < #[] : [].i)
     ={def #}
     (Sum i : 0 <= i < 0 : [].i)
@@ -432,7 +432,7 @@ Continuacion en *
     ={rango vacio}
     0
 
-        · Caso inductiva: sum (x:xs)
+#        · Caso inductiva: sum (x:xs)
     (Sum i : 0 <= i < #(x:xs) : (x:xs).i)
     ={logica}
     (Sum i : 0 = i v 1 <= i < #(x:xs) : (x:xs).i)
@@ -461,20 +461,60 @@ g (x:xs) n = (x == (n + sum xs)) || (g xs (n+x))
 f [] = False
 f (x:xs) = (x == sum xs) || g (x:xs) 0
 
-* Ejercicio 8. Dada f : Nat -> Bool y suponiendo (∃n : 0 ≤ n : f.n), especificar
-y derivar una funcion que encuentre el minimo natural x tal que f.x. 
+####################################################################################
+# * Ejercicio 8. Dada f : Nat -> Bool y suponiendo (∃n : 0 ≤ n : f.n), especificar #
+# y derivar una funcion que encuentre el minimo natural x tal que f.x.             #
+####################################################################################
 --Pagina 193 libro derivar una funcion (g) que satisface f
 
+(Min i : 0 <= i ^ f.i : i) es el predicado que especifica el natural
+Sea g n = (Min i : n <= i ^ f.i : i) , g : Nat -> Nat
 
+g n
+=Def g
+(Min i : n <= i ^ f.i : i)
+=particion de rango
+(Min i : n = i ^ f.i : i) min (Min i : n < i ^ f.i : i)
+=Leibniz, aritmetica
+(Min i : n = i ^ f.n : i) min (Min i : n+1 <= i ^ f.i : i)
+=H.I.
+(Min i : n = i ^ f.n : i) min g (n+1)
 
-Ejercicio 9. Derivar un programa usando la siguiente especificacion:
-P xs.ys = (∃as, bs :: ys = as ++ xs ++ bs),
-que dadas dos listas determina si la primera es subsegmento de la segunda.
+#    · Caso base: f n
+(Min i : n = i : i) min g (n+1)
+=Rango unitario
+n min g (n+1)
+= n <= g (n+1)
+n
+
+#    · Caso inductivo: ¬(f n)
+(Min i : n = i ^ False : i) min g (n+1)
+=Logica
+(Min i : False : i) min g (n+1)
+=Rango vacío
++Inf min g (n+1)
+=Neutro min
+g (n+1)
+
+Definicion g:
+g : Nat -> Num
+g n = if f n then n else g (n+1)
+
+f : Nat -> Bool
+f n = or[f n | 0 <= n]
+
+    * Revisar def f. Libro 193.
+
+##############################################################################
+# Ejercicio 9. Derivar un programa usando la siguiente especificacion:       #
+# P xs.ys = (∃as, bs :: ys = as ++ xs ++ bs),                                #
+# que dadas dos listas determina si la primera es subsegmento de la segunda. #
+##############################################################################
 -- partir un rango en subsegmentos quiere decir pensar en que es vacio o no es vacio
 
 P xs.ys = (∃as, bs :: ys = as ++ xs ++ bs)
 
-    · Caso base: P [] ys
+#    · Caso base: P [] ys
 (∃as, bs :: ys = as ++ [] ++ bs)
 ={def ++}
 (∃as, bs :: ys = as ++ bs)
@@ -495,7 +535,7 @@ True v (∃bs : : ys = (a:as) ++ bs)
 ={logica}
 True
 
-    · Caso base: P (x:xs) []
+#    · Caso base: P (x:xs) []
 (∃as, bs :: [] = as ++ (x:xs) ++ bs)
 ={logica}
 (∃as, bs :: [] = as ^ [] = (x:xs) ^ [] = bs)
@@ -506,7 +546,7 @@ True
 ={termino constante}
 False
 
-    · Caso inductivo: P (x:xs) (y:ys)
+#    · Caso inductivo: P (x:xs) (y:ys)
 (∃as, bs :: (y:ys) = as ++ (x:xs) ++ bs)
 ={logica}
 (∃as, bs : as = [] v as /= [] : (y:ys) = as ++ (x:xs) ++ bs)
@@ -535,7 +575,7 @@ y = x ^ (∃bs :: ys = xs ++ bs) v (P (x:xs) ys)
 
 donde Q xs ys = (∃bs :: ys = xs ++ bs)
 derivamos Q:
-    · Caso base: Q [] ys
+#    · Caso base: Q [] ys
 (∃bs :: ys = [] ++ bs)
 ={def ++}
 (∃bs :: ys = bs)
@@ -544,14 +584,14 @@ derivamos Q:
 ={termino constante}
 True
 
-    · Caso 1: Q (x:xs) []
+#    · Caso 1: Q (x:xs) []
 (∃bs :: [] = (x:xs) ++ bs)
 ={def = para listas}
 (∃bs :: False)
 ={termino constante}
 False
 
-    · Caso inductivo: Q (x:xs) (y:ys)
+#    · Caso inductivo: Q (x:xs) (y:ys)
 (∃bs :: (y:ys) = (x:xs) ++ bs)
 ={def ++}
 (∃bs :: (y:ys) = x:(xs ++ bs))
@@ -584,15 +624,18 @@ f2 [] ys = True
 f2 (x:xs) [] = False
 f2 (x:xs) (y:ys) = (x == y) && f2 xs ys
 
-Ejercicio 10. Especificar y derivar una funcion que dada una lista de números
-calcula el promedio de la misma, recorriendo la lista una sola vez
-(Ayuda: utilizar tuplas).
+#################################################################################
+# Ejercicio 10. Especificar y derivar una funcion que dada una lista de números #
+# calcula el promedio de la misma, recorriendo la lista una sola vez            #
+# (Ayuda: utilizar tuplas).                                                     #
+#################################################################################
 f xs = (sumatoria i : 0 <= i < #xs : xs.i)
 g xs = (contatoria i : 0 <= i < #xs : i)
+
 h xs = (f xs , g xs)
     f xs / g xs
 
-    · Caso base : h [x] = (f [x] , g [x])
+#    · Caso base : h [x] = (f [x] , g [x])
 ={def h}
 f [x] / g [x]
 ={def f, def g}
@@ -602,7 +645,7 @@ x / 1
 ={def h}
 (x,1)
 
-    · Caso inductivo : h (x:xs) = (f (x:xs) , g (x:xs))
+#    · Caso inductivo : h (x:xs) = (f (x:xs) , g (x:xs))
 ={def h}
 f (x:xs) / g (x:xs)
 ={def f, def g}
@@ -628,6 +671,7 @@ h (x:xs) = (x+a , 1+b)
 
 h' xs = fst (h xs)
 
-
-* Ejercicio 11. Implementar todas las funciones obtenidas de las derivaciones
-dadas en el téorico y en el practico.
+#################################################################################
+# * Ejercicio 11. Implementar todas las funciones obtenidas de las derivaciones #
+# dadas en el téorico y en el practico.                                         #
+#################################################################################
