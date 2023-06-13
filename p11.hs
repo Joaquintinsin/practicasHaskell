@@ -1,5 +1,4 @@
 Práctico 11: Imperativo - Lógica de Hoare
-
     · Reglas wp
 {wp}.False = False
 {wp}.S.{Q} ^ {wp}.S.{R} = {wp}.S.{Q^R}
@@ -7,9 +6,12 @@ Práctico 11: Imperativo - Lógica de Hoare
 {wp}.skip.{Q} = {Q}
 {wp}.(x:=E).{Q} = {Q(x:=E)}
 {wp}.S;T.{Q} = {wp}.S.{{wp}.T.{Q}}
+{wp}.if.{Q} = {(B0 v B1 v ... v Bn) ^ (B0 -> {wp}.S0.{Q}) ^ ... ^ (Bn -> {wp}.Sn.{Q})}
 
-Ejercicio 1. Encontrar la precondición más débil de los siguientes programas:
-    a.  {wp} x := (x - y) * (x + y) {(x + y² = 0)}
+################################################################################
+#Ejercicio 1. Encontrar la precondición más débil de los siguientes programas: #
+################################################################################
+#    a.  {wp} x := (x - y) * (x + y) {(x + y² = 0)}
 =wp de la asignacion
 { (((x-y)*(x+y)) + y² = 0) }
 =diferencia de cuadrado
@@ -21,8 +23,7 @@ Ejercicio 1. Encontrar la precondición más débil de los siguientes programas:
 
 wp = {x=0}
 
-
-    b. {wp} q, r := q + 1, r - y {q * y + r = x}
+#    b. {wp} q, r := q + 1, r - y {q * y + r = x}
 =wp de la asignacion
 { (q+1) * y + (r-y) = x }
 =distributiva
@@ -32,13 +33,11 @@ wp = {x=0}
 
 wp = { qy + r = x }
 
-
-    c. {wp}
-       a := a ≡ b;
-       b := a ≡ b;
-       a := a ≡ b;
-       { (a≡ B) ^ (b≡ A) }
-
+#    c. {wp}
+#       a := a ≡ b;
+#       b := a ≡ b;
+#       a := a ≡ b;
+#       { (a≡ B) ^ (b≡ A) }
 =wp de la composicion {wp}.S;T.{Q} = {wp}.S.{{wp}.T.{Q}}
 {wp} a := a ≡ b {{wp} b := a ≡ b {{wp} a := a ≡ b { (a ≡ B) ^ (b ≡ A) }}}
 =wp de la asignacion {wp}.(x:=E).{Q} = {Q(x:=E)}
@@ -56,15 +55,15 @@ wp = { qy + r = x }
 
 wp = {b ≡ B ^ a ≡ A}
 
-
-Ejercicio 2. Calcular expresiones E tal que:
+###############################################
+#Ejercicio 2. Calcular expresiones E tal que: #
+###############################################
     · Reglitas Ternas Hoare
 {P} x := E {Q} ≡ [P -> Q(x := E)]
 {P} S;T {Q} ≡ {P} S {R} ^ {P} T {Q}
 {P} S {Q} ≡ [P -> wp.S.Q]
 
-    a.  {A = q * B + r} q := E; r := r - B {A = q * B + r}
-
+#    a.  {A = q * B + r} q := E; r := r - B {A = q * B + r}
 =Def wp , def wp composicion
 (A = q * B + r) -> {wp} q := E {{wp} r := r - B {A = q * B + r}}
 =Def wp composicion
@@ -85,8 +84,7 @@ B * (q + 1) = E * B
 q + 1 = E
 
 
-    b.  {x * y + p * q = N } x := x - p; q := E {x * y + p * q = N }
-
+#    b.  {x * y + p * q = N } x := x - p; q := E {x * y + p * q = N }
 =Def wp
 (x * y + p * q = N) -> {wp} x := x - p; q := E {x * y + p * q = N}
 =Def wp composicion
@@ -108,14 +106,14 @@ p * (-y + E) = p*q
 =Resto y ambos lados
 E = q + y
 
-
-* Ejercicio 3. Demostrar la corrección del siguiente programa:
-    {x = A ^ y = B}
-    x := x - y;
-    y := x + y;
-    x := y - x;
-    {x = B ^ y = A}
-
+#################################################################
+#* Ejercicio 3. Demostrar la corrección del siguiente programa: #
+#################################################################
+#    {x = A ^ y = B}
+#    x := x - y;
+#    y := x + y;
+#    x := y - x;
+#    {x = B ^ y = A}
 =def wp : {P} S {Q} ≡ [P -> wp.S.Q]
 [(x = A ^ y = B) -> {wp} x := x - y; y := x + y; x := y - x; {x = B ^ y = A}]
 =def wp composicion
@@ -137,15 +135,15 @@ E = q + y
 ={logica}
 True
 
-
-Ejercicio 4. Demostrar la corrección de los siguientes programas.
-En todos los casos x, y: Int y a, b: Bool.
-a. {True}
-   if x ≥ y -> skip
-   [] x ≤ y -> x,y := y,x
-   fi
-   {x ≥ y}
-
+####################################################################
+#Ejercicio 4. Demostrar la corrección de los siguientes programas. #
+####################################################################
+#En todos los casos x, y: Int y a, b: Bool.
+# a. {True}
+#    if x ≥ y -> skip
+#    [] x ≤ y -> x,y := y,x
+#    fi
+#    {x ≥ y}
 =def wp
 [P -> {wp}.S.{Q}]
 =(P = True) , (S = if) , Q = (x ≥ y)
@@ -162,13 +160,12 @@ a. {True}
 True
 
 
-b. {True}
-   x, y := y * y, x * x;
-   if x ≥ y -> x := x + 1
-   [] x ≤ y -> y := y - x
-   fi
-   {x ≥ 0 ^ y ≥ 0}
-
+# b. {True}
+#    x, y := y * y, x * x;
+#    if x ≥ y -> x := x + 1
+#    [] x ≤ y -> y := y - x
+#    fi
+#    {x ≥ 0 ^ y ≥ 0}
 ={def wp}
 [P -> {wp}.S.{Q}]
 ={reemplazo}
@@ -195,12 +192,11 @@ b. {True}
 True
 
 
-c. {True}
-   if not a or b -> a := not a
-   [] a or not b -> b := not b
-   fi
-   {a ∨ b}
-
+# c. {True}
+#    if not a or b -> a := not a
+#    [] a or not b -> b := not b
+#    fi
+#    {a ∨ b}
 =def wp
 [True -> {wp}.if.{a ∨ b}]
 =logica , def wp if
@@ -217,11 +213,11 @@ c. {True}
 True
 
 
-d. {N ≥ 0}
-   x := 0
-   do x <> N -> x := x + 1
-   od
-   {x = N}
+# d. {N ≥ 0}
+#    x := 0
+#    do x <> N -> x := x + 1
+#    od
+#    {x = N}
 
 ## como cota: tomar algo relacionado con el programa de manera tal que la accion achique la cota.
 ## elegir una cota entendiendo lo que va haciendo el programa y que acciones va haciendo para que yo tome eso
@@ -231,7 +227,7 @@ d. {N ≥ 0}
 
 I = {x ≤ N}
 Demostracion del do por medio del teorema:
-    · Inicializacion: {P}.S0.{I}
+#    · Inicializacion: {P}.S0.{I}
 {N ≥ 0}. x := 0 .{x ≤ N}
 =def wp
 [N ≥ 0 -> {wp}. x := 0 .{x ≤ N}]
@@ -240,14 +236,14 @@ Demostracion del do por medio del teorema:
 ={logica}
 True
 
-    · Postcondición: I ^ not B0 ^ ... ^ not Bn -> Q
+#    · Postcondición: I ^ not B0 ^ ... ^ not Bn -> Q
 x ≤ N ^ not (x <> N) -> x = N
 ={logica}
 x ≤ N ^ x = N -> x = N
 ={precondicion}
 True
 
-    · Invariante: {Bi ^ I}.Si.{I}
+#    · Invariante: {Bi ^ I}.Si.{I}
 {(x <> N) ^ x ≤ N} x := x + 1 {x ≤ N}
 ={def wp}
 [(x <> N) ^ x ≤ N -> {wp} x := x + 1 {x ≤ N}]
@@ -262,11 +258,10 @@ True
 ={logica}
 True
 
-Correción parcial demostrada.
-
-Dem correción total:
+# Correción parcial demostrada.
+# Dem correción total:
 v = {N - x}
-    · Variante (a): I ^ Bi -> v ≥ 0
+#    · Variante (a): I ^ Bi -> v ≥ 0
 x ≤ N ^ x <> N -> N - x ≥ 0
 ={aritmetica}
 x ≤ N ^ x <> N -> N ≥ x
@@ -278,7 +273,7 @@ x < N -> N > x
 ={logica}
 True
 
-    · Variante (b): {I ^ Bi ^ v = A}.Si.{v < A}
+#    · Variante (b): {I ^ Bi ^ v = A}.Si.{v < A}
 {x ≤ N ^ x <> N ^ N - x = A} x := x + 1 {N - x < A}
 ={def wp}
 [{x ≤ N ^ x <> N ^ N - x = A} -> {wp} x := x + 1 {N - x < A}]
@@ -308,29 +303,30 @@ True
 ={logica}
 True
 
-Correción total demostrada.
+# Correción total demostrada.
 
 
-
-Ejercicio 5. Dado el siguiente programa:
-con N : Nat
-var n : Nat; r : Bool
-var A: array array:[0..N) of Nat
-    {N > 0}
-     n,r := 0, True
-        I = {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }
-     do n <> N
-      n,r := n + 1, r and A.n = A.(N - n -1)
-     od
-    {r = <∀i : 0 ≤ i < N : A.i = A.(N - i - 1)> }
+###########################################
+#Ejercicio 5. Dado el siguiente programa: #
+###########################################
+# con N : Nat
+# var n : Nat; r : Bool
+# var A: array array:[0..N) of Nat
+#     {N > 0}
+#      n,r := 0, True
+#         I = {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }
+#      do n <> N
+#       n,r := n + 1, r and A.n = A.(N - n -1)
+#      od
+#     {r = <∀i : 0 ≤ i < N : A.i = A.(N - i - 1)> }
 
 ¿Qué hace este algoritmo? Demostrar la corrección del mismo.
     Compara capicuamente los elementos de un arreglo que sean todos iguales
 
 ## recorrer una secuencia: remplazar cte por variable. la cte que remplazo es el limite hasta donde llega la sec
 
-Demostracion parcial:
-1) Inicializacion: {P} S {I}
+# Demostracion parcial:
+# 1) Inicializacion: {P} S {I}
 =def wp
 [P -> {wp} S {I}]
 =def P, S, I
@@ -346,7 +342,7 @@ Demostracion parcial:
 =precondicion
 True
 
-2) Postcondicion: I ^ ~B0 ^ ... ^ ~Bn -> Q
+# 2) Postcondicion: I ^ ~B0 ^ ... ^ ~Bn -> Q
 =def I, B0, Q
 {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N } ^ ~(n <> N) 
     -> {r = <∀i : 0 ≤ i < N : A.i = A.(N - i - 1)> }
@@ -365,7 +361,7 @@ r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ N
 =logica p ^ q -> p = true
 True
 
-3) Invariante: {Bi ^ I}.Si.{I}
+# 3) Invariante: {Bi ^ I}.Si.{I}
 {n <> N ^ {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }}
     n,r := n + 1, r and A.n = A.(N - n -1)
 {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N }
@@ -399,11 +395,11 @@ True
 =monotonia de relacion de orden (0 ≤ n < N -> 0 ≤ n + 1 ≤ N)
 True
 
-Correccion parcial demostrada.
+# Correccion parcial demostrada.
 
-Correccion total:
+# Correccion total:
     · v = {N-n}
-4) Variante (a): I ^ Bi -> v ≥ 0
+# 4) Variante (a): I ^ Bi -> v ≥ 0
 r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N ^ n <> N -> N-n ≥ 0
 =logica, aritmetica
 r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n < N -> N ≥ n
@@ -412,7 +408,7 @@ r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ (0 ≤ n ^ n < N) -> (N > n v N
 =logica q ^ s ^ p -> p v r = True
 True
 
-5) Variante (b) : {I ^ Bi ^ v=A} Si {v<A}
+# 5) Variante (b) : {I ^ Bi ^ v=A} Si {v<A}
 {r = <∀i : 0 ≤ i < n : A.i = A.(N - i - 1)> ^ 0 ≤ n ≤ N ^ n <> N ^ N-n = A} 
     n,r := n + 1, r and A.n = A.(N - n -1)
 {N-n<A}
@@ -432,4 +428,4 @@ True
 =logica
 True
 
-Correcion total demostrada.
+# Correcion total demostrada.
