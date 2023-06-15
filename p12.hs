@@ -88,6 +88,8 @@ r,j := A.i >= 0 && r , j+1 ;
 # S
 # {r = (N p : 0 ≤ p < M : A.p ≥ 0)}
 
+
+
 #############################################################################
 # Ejercicio 5. Calcular un programa que, dados dos enteros positivos x e y, #
 # devuelva en una variable el mı́nimo común múltiplo de ambos.               #
