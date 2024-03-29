@@ -3,7 +3,6 @@ nand:: Bool->Bool->Bool
 nand True True = False
 nand _ _ = True
 
-
 -- ----------------------------------------------------
 -- 2. Definir en Haskell la función
 -- maj retorna True sii al menos 2 argumentos son True.
@@ -13,7 +12,6 @@ maj True True _ = True
 maj True _ True = True
 maj _ True True = True
 maj _ _ _ = False
-
 
 -- ---------------------------------------------------- 
 -- Para las siguientes funciones se debe respetar el 
@@ -44,29 +42,33 @@ retorna True sii al menos un elemento es True
 Con estos dos operadores y listas por comprensión podemos escribir una
 versión ejecutable de los cuantificadores en Haskell. Por ejemplo el siguiente
 cuantificador:
-    (∀i : 0 ≤ i < ]xs : even xs.i)
+    (∀i : 0 ≤ i < #xs : even xs.i)
 Puede escribirse literalmente como:
-    and [even (xs !! i) | i <− [0..(length xs) − 1]]
+    and [even (xs !! i) | i <- [0..(length xs) - 1]]
 Pero en Haskell lo más común es escribirlo de la siguiente forma:
-    and [even x | x <− xs]
+    and [even x | x <- xs]
 
 Utilizar estas ideas para escribir los siguientes cuantificadores:
     · (∃i : 0 ≤ i < #xs : p xs.i)
     · (∀i : 0 ≤ i < #xs : p xs.i)
 Para un predicado p dado.
+
+· or[p (xs!!i) | i <- [0..(length xs) - 1]]
+  or[p x | x <- xs]
+· and[p (xs!!i) | i <- [0..(length xs) - 1]]
+  and[p x | x <- xs]
 -}
-paraTodoMio :: [Int] -> [a] -> (Int -> [a] -> Bool)-> Bool
+paraTodoMio :: [Int] -> [a] -> (Int -> [a] -> Bool) -> Bool
 paraTodoMio [] _ f = True
 paraTodoMio (x:xs) [] f = True
 paraTodoMio (x:xs) (y:ys) f = and [f i (y:ys) | i <- (x:xs)]
 
-paraTodoClase :: [Int] -> [a] -> (Int -> [a] -> Bool)-> Bool
+paraTodoClase :: [Int] -> [a] -> (Int -> [a] -> Bool) -> Bool
 paraTodoClase indices xs f = and [f i xs | i <- indices]
 
 even' :: Int -> [Int] -> Bool
 even' n [] = True
 even' n (x:xs) = even ((x:xs)!!n) -- && even' n xs ... si recurso sobre xs muevo la lista original
-
 
 -- ----------------------------------------------------
 -- La lista [Int] de paraTodo representa las posiciones 
@@ -84,7 +86,6 @@ existe (x:xs) (y:ys) f = or [f i (y:ys) | i <- (x:xs)]
 odd' :: Int -> [Int] -> Bool
 odd' n [] = False
 odd' n (x:xs) = odd ((x:xs)!!n) -- || odd' n xs ... si recurso sobre xs muevo la lista original
-
 
 {-
 4. Utilizando las ideas asociadas a listas por comprensión, y las funciones

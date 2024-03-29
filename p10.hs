@@ -42,12 +42,11 @@ True
 
 # Probar: map (f o g) xs = (map f) o (map g) xs
 
-o :: (a -> a) -> (a -> a) -> [a] -> [a]
-o f g [] = []
-o f g xs = f (g xs) -- f o g xs = f (g xs) con notacion infija
+o :: (b -> c) -> (a -> b) -> a -> c
+o f g xs = f (g xs)
 
-map :: (a -> a) -> [a] -> [a]
-map f [] = []
+map :: (a -> b) -> [a] -> [b]
+map _ [] = []
 map f (x:xs) = f x : map f xs
 
 #    · Caso base: map.(fog).[]
@@ -55,6 +54,10 @@ map (f o g) [] = (map f) o (map g) []
 ={def map}
 [] = (map f) o (map g) []
 ={def o}
+[] = map f (map g [])
+={def map}
+[] = map f []
+={def map}
 [] = []
 ={logica}
 True
@@ -62,14 +65,15 @@ True
 #    · Caso inductivo: map.(fog).(x:xs)
 map (f o g) (x:xs) = (map f) o (map g) (x:xs)
 ={def map}
-(f o g) x : map (f o g) xs = (map f) o (map g) (x:xs)
-={def o}
-(f o g) x : map (f o g) xs = (map f) (map g (x:xs))
+(f o g) x : map (f o g) xs
 ={H.I.}
-(f o g) x : (map f) o (map g) xs = (map f) (map g (x:xs))
+(f o g) x : (map f) o (map g) xs
+={def o}
+f(g x) : map f (map g xs)
 ={def map}
-(f o g) x : (map f) o (map g) xs = (map f) (g x : map g xs)
-=??? terminar
+map f (map g (x:xs))
+={def o}
+(map f) o (map g) (x:xs)
 
 # Probar: reversa (xs ++ ys) = reversa ys ++ reversa xs
 
@@ -93,9 +97,11 @@ reversa ((x:xs) ++ ys) = reversa ys ++ reversa (x:xs)
 ={def ++}
 reversa (x:(xs++ys)) = reversa ys ++ reversa (x:xs)
 ={def reversa}
-revesa (xs++ys) ++ [x] = reversa ys ++ reversa xs ++ [x]
+revesa (xs++ys) ++ [x] = reversa ys ++ (reversa xs ++ [x])
 ={H.I.}
-reversa ys ++ reversa xs ++ [x] = reversa ys ++ reversa xs ++ [x]
+(reversa ys ++ reversa xs) ++ [x] = reversa ys ++ (reversa xs ++ [x])
+={asociatividad de ++}
+reversa ys ++ (reversa xs ++ [x]) = reversa ys ++ (reversa xs ++ [x])
 ={logica}
 True
 
@@ -173,7 +179,8 @@ True ^ (forall i : 1 <= i < 1 + #xs : x = (x:xs).i )
 
 no se puede aplicar H.I. (x sobra y no se puede reescribir)
 entonces hay que pasar a otro metodo de derivacion:
-modularizacion.
+modularizacion. (o generalizacion? porque estamos encontrando una nueva especificacion, 
+una nueva funcion, que generaliza una expresion atomica para poder derivar la especificacion original)
 
 Sea g xs y = (forall j : 0 <= j < #xs : y = xs.j )
 

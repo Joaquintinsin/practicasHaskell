@@ -42,7 +42,10 @@ ghci> intToNat (-1)
 
 
 --Forma 3:
-data Nat = Zero | Succ Nat -- si no lo derivamos, por mas que lo instanciemos no podemos mostrarlo. Solo podemos usar las funciones que se le instanciaron, en este caso igual y distinto. La clase Iguales a está instanciando a los Naturales por medio de la clase Iguales a
+-- si no lo derivamos, por mas que lo instanciemos no podemos mostrarlo. 
+-- Solo podemos usar las funciones que se le instanciaron, en este caso igual y distinto. 
+-- La clase Iguales a está instanciando a los Naturales por medio de la clase Iguales a
+data Nat = Zero | Succ Nat 
 
 class Iguales a where
     igual :: a -> a -> Bool

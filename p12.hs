@@ -1,6 +1,6 @@
 Practico 12: Imperativo - Calculo de programas imperativos
 ################################################################################
-# Ejercicio 1. Derivar dos programas que calculen r = X Y a partir de cada una #
+# Ejercicio 1. Derivar dos programas que calculen r = X^Y a partir de cada una #
 # de las siguientes definiciones de la función exponencial:                    #
 ################################################################################
 # · (a)

@@ -3,7 +3,7 @@ Práctico 9: Especificaciones
 Para tener en cuenta algunos conceptos: por subsegmento de xs o subsecuencia 
 de xs entendemos a cualquier lista cuyos elementos están en xs, en el mismo orden y consecutivamente. 
 Por ejemplo, si la lista es xs = [1, 4, 2, 1, 1, 8, 7] los siguientes son ejemplos de subsegmentos:
-    · secuencia vacı́a: [].
+    · secuencia vacía: [].
     · subsegmento unitario [4].
     · subsegmento inicial [1, 4].
     · [2, 1, 1].
@@ -76,7 +76,8 @@ esPrimo x = not(esPrimo' x (x-1))
 (Max n : 0 <= n < #xs ^ xs.n == True : n)
 
 #  c) f es una función que devuelve true si y solo si todos los elementos de xs son equivalentes.
-f xs : (paraTodo i : 0 <= i < length xs - 1 : xs.i)
+f xs : (paraTodo i : 0 <= i < length xs : xs.i)
+f xs : (paraTodo i : 0 <= i < length xs - 1 : xs.i == xs.(i+1))
 f xs : not(exists i : 0 <= i < length xs : xs.i == False)
 
 ######################################################
@@ -84,8 +85,7 @@ f xs : not(exists i : 0 <= i < length xs : xs.i == False)
 ######################################################
 #  a) f.xs determina si xs tiene la misma cantidad de pares que impares.
 f xs : (contatoria i : 0 <= i < #xs : xs.i ´mod´ 2 == 0) == (contatoria i : 0 <= i < #xs : xs.i ´mod´ 2 == 1)
-f xs : (paraTodo i : 0 <= i < #xs : (contatoria j : 0 <= j < #xs ^ j /= i : xs.j ´mod´ 2 = 0)
-                                    = (contatoria k : 0 <= k < #xs ^ k /= i : xs.k ´mod´ 2 = 1))
+f xs : even (length xs) ^ ((contatoria i : 0 <= i < #xs : even (xs!!i)) == (contatoria i : 0 <= i < #xs : odd (xs!!i)))
 
 #  b) f.n determina si n es primo.
 f n : (contatoria i : 1 <= i <= n : n ´mod´ i = 0) = 2
@@ -94,7 +94,7 @@ f n : (contatoria i : 1 <= i <= n : n ´mod´ i = 0) = 2
 f xs ys : (exists as,bs : True : xs = (as++ys++bs))
 
 #  d) f.xs.ys determina si ys es una subsecuencia final de xs.
-f xs ys : (exists as,bs : True : xs = (as++ys++bs))
+f xs ys : (exists as : True : xs = as++ys++bs ^ bs = [])
 f xs ys : (exists as : True : xs = (as++ys))
 
 ##########################################
@@ -106,6 +106,7 @@ f xs ys : (exists as : True : xs = (as++ys))
 # Si xs = [1, 3, 5] , el subsegmento que da la suma mı́nima es [] , pues la suma de la lista vacı́a 
 # es cero.
 f xs : (Min as : (exists bs,cs : True : xs = (bs++as++cs)) : Sum (as) )
+f xs : (Min bs : xs = as++bs++cs : (Sumatoria i : 0 <= i < length xs : bs.i))
     f4a :: [Int] -> Int
     f4a = min [sum as | xs == bs++as++cs]
 
@@ -114,12 +115,12 @@ f xs : (Min as : (exists bs,cs : True : xs = (bs++as++cs)) : Sum (as) )
 # [1,2,3,4] = 0   , [1,2,3,2,4] = 0
 # [2,2,1,3,4] = 2
 # [1,1,1,3,2,2,3,4,3,5,3,6,3,3] = 3
-maxigual xs : (Max as,bs,cd : as++bs++cs == xs ^ iguales (bs) : #bs)
+maxigual xs : (Max bs : as++bs++cs == xs ^ iguales (bs) : #bs)
     iguales xs : (paraTodo i : 0 <= i < #xs : xs.0 == xs.i)
 
 #  c) Especifique la función maxdistinto : [Int]− > Int que determina la longitud del subsegmento más 
 # largo en donde todos los elementos son distintos.
-maxdistinto xs : (Max as,bs,cd : as++bs++cs == xs ^ iguales (bs) : #bs)
+maxdistinto xs : (Max bs : as++bs++cs == xs ^ distinto (bs) : #bs)
     distinto xs : (paraTodo i,j : 0 <= i <= j < #xs : i==j v xs.i /= xs.j)
 
 #######################################################################################################
@@ -139,7 +140,7 @@ esPrimo' x n = mod x n == 0 || esPrimo' x (n-1)
 
 esPrimo :: Int -> Bool
 esPrimo 1 = False
-esPrimo x = not(esPrimo' x (x-1)) -}
+esPrimo x = not(esPrimo' x (x-1))
 
 f5a :: [Int] -> Int
 f5a xs = product [xs!!i | i <- [0..(length xs)-1] , esPrimo(xs!!i)]
@@ -183,3 +184,5 @@ split3 xs = [(take i xs, take (j - i) (drop i xs), drop j xs) | i <- [0..length 
 
 split2 :: [a] -> [([a],[a])]
 split2 xs = [(take i xs,drop i xs) | i <- [0..length xs]]
+
+--Una lista que contenga todas las coordenadas de una matriz infinita, pero de manera diagonal

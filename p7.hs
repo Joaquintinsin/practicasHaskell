@@ -47,7 +47,10 @@ True
 {- Ejercicio 2 Recuerde el mundo de los caballeros y mentirosos. En este mundo hay dos clases de personas:
 · los caballeros que solo dicen la verdad.
 · los mentirosos que solo dicen mentiras.
-Suponiendo que encontramos una persona A en este mundo que nos dice una asercion S. Esta situacion es formalizada con la formula A ≡ S (intuitivamente A es un caballero si y solo si nos dice la verdad). Utilizando la logica proposicional, averigue (en caso de ser posible) quienes son caballeros y quienes mentirosos en los siguientes casos: -}
+Suponiendo que encontramos una persona A en este mundo que nos dice una asercion S. 
+Esta situacion es formalizada con la formula A ≡ S (intuitivamente A es un caballero si y solo si nos dice la verdad). 
+Utilizando la logica proposicional, averigue (en caso de ser posible) quienes son caballeros y quienes mentirosos en los 
+siguientes casos: -}
 -- 1) A dice: yo soy un caballero y B es un mentiroso.
 A ≡ A ^ ¬B
 ≡ {regla dorada}
@@ -196,4 +199,3 @@ K * (Sumatoria i : R.i ^ T.i : 1)
 (Sumatoria i : R.i ^ T.i : k * 1)
 ≡ {aritmetica}
 (Sumatoria i : R.i ^ T.i : k)
-

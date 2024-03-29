@@ -2,7 +2,7 @@
 1. Generar una lista infinita de unos.
 [1,1..] [n|n<-[1,1..]]
 
-2. Generar una lista infinita de naturales comenzando desde un n ́umero dado.
+2. Generar una lista infinita de naturales comenzando desde un numero dado.
 [n,(n+1)..] [n|x<-[1,2..n],n>x]
 
 3. Generar una lista con los primeros n naturales.
@@ -25,8 +25,7 @@ cuadList' :: [Int] -> [Int]
 cuadList' [] = []
 cuadList' (x:xs) = map (^2) (x:xs)
 
-{-
-6. Dado un entero positivo, retornar la lista de sus divisores. -}
+{- 6. Dado un entero positivo, retornar la lista de sus divisores. -}
 tomarN :: Int -> [Int]
 tomarN 0 = []
 tomarN x = take x [1,2..]
@@ -42,8 +41,7 @@ divisores' :: Int -> [Int]
 divisores' 0 = [1,2..]
 divisores' n = filter (esDiv' n) (tomarN n)
 
-{-
-7. Dada una lista de naturales, obtener la lista que contenga solo los numeros primos de la lista original. -}
+{- 7. Dada una lista de naturales, obtener la lista que contenga solo los numeros primos de la lista original. -}
 esPrimo' :: Int -> Int -> Bool
 esPrimo' x 1 = False
 esPrimo' x n = mod x n == 0 || esPrimo' x (n-1)
@@ -55,8 +53,7 @@ esPrimo x = not(esPrimo' x (x-1))
 listPrim :: [Int] -> [Int]
 listPrim xs = filter esPrimo xs
 
-{-
-8 *. Dada una lista de naturales, retornar la suma de los cuadrados de la lista.-}
+{- 8 *. Dada una lista de naturales, retornar la suma de los cuadrados de la lista.-}
 cuadrado :: Int -> Int
 cuadrado x = x*x
 
@@ -64,14 +61,12 @@ sumaCuad :: [Int] -> Int
 sumaCuad [] = error "sumaCuad: Undefined for empty lists"
 sumaCuad xs = sum (map cuadrado xs)
 
-{-
-9. Dada una lista de naturales, retornar la lista con sus sucesores. -}
+{- 9. Dada una lista de naturales, retornar la lista con sus sucesores. -}
 sucesorNat :: [Int] -> [Int]
 sucesorNat [] = []
 sucesorNat xs = map (+1) xs
 
-{-
-10. Dada una lista de enteros, sumar todos sus elementos. -}
+{- 10. Dada una lista de enteros, sumar todos sus elementos. -}
 sumadorLista :: [Int] -> Int
 sumadorLista [] = 0
 sumadorLista (x:xs) = x + sumadorLista xs
@@ -79,8 +74,7 @@ sumadorLista (x:xs) = x + sumadorLista xs
 sumElemInt :: [Int] -> Int
 sumElemInt xs = foldl (+) 0 xs
 
-
--- 11 *. Definir el factorial usando fold.
+{- 11 *. Definir el factorial usando fold. -}
 factFold :: Int -> Int
 factFold 0 = 1
 factFold n = foldl (*) 1 [1..n]
@@ -104,24 +98,23 @@ sumListr _ n = n+1
 tamr :: [a] -> Int
 tamr xs = foldr (sumListr) 0 xs
 
-
 {- Utilizando listas por comprension resolver:
 14. Dada una lista de enteros, retornar sus sucesores. -}
 lSuc :: [Int] -> [Int]
 lSuc [] = []
 lSuc xs = [e+1 | e <- xs]
 
--- 15 *. Dada una lista de naturales, retornar sus cuadrados.
+{- 15 *. Dada una lista de naturales, retornar sus cuadrados. -}
 lCuad :: [Int] -> [Int]
 lCuad [] = []
 lCuad xs = [e*e | e <- xs]
 
---16. Dada una lista de enteros, retornar los elementos pares que sean mayores a 10.
+{- 16. Dada una lista de enteros, retornar los elementos pares que sean mayores a 10. -}
 lParesMay10 :: [Int] -> [Int]
 lParesMay10 [] = []
 lParesMay10 xs = [e | e <- xs , mod e 2 == 0 && e > 10]
 
---17. Dado un entero, retornar sus divisores.
+{- 17. Dado un entero, retornar sus divisores. -}
 lDivisores :: Int -> [Int]
 lDivisores x = [e | e <- [1,2..x] , mod x e == 0]
 
@@ -145,12 +138,12 @@ esPrimo x = not(esPrimo' x (x-1))
 lPrimosN :: Int -> [Int]
 lPrimosN n = [x | x <- [2,3..n] , esPrimo x]
 
--- 20. Dadas dos listas de naturales, retornar su producto cartesiano.
+{- 20. Dadas dos listas de naturales, retornar su producto cartesiano. -}
 lProdCart :: [Int] -> [Int] -> [(Int,Int)]
 lProdCart [] [] = []
 lProdCart xs ys = [(x,y) | x <- xs , y <- ys]
 
--- 21 *. Dadas una lista y un elemento retornar el numero de ocurrencias del elemento x en la lista ys.
+{- 21 *. Dadas una lista y un elemento retornar el numero de ocurrencias del elemento x en la lista ys. -}
 cantOcurr :: Eq a => [a] -> a -> Int
 cantOcurr [] _ = 0
 cantOcurr xs x = length ([e | e <- xs , e == x])
@@ -169,6 +162,11 @@ dos. Por ejemplo: split2 [1,2,3] = [([],[1,2,3]), ([1],[2,3]), ([1,2],[3]),([1,2
 split2 :: [a] -> [([a],[a])]
 split2 xs = [(take i xs,drop i xs) | i <- [0..length xs]]
 
+--Chat
+split2' :: [a] -> [([a], [a])]
+split2' [] = [([], [])] -- Caso base: lista vacía, retorna una lista con una tupla de dos listas vacías
+split2' (x:xs) = ([], x:xs) : [(x:ys, zs) | (ys, zs) <- split2 xs]
+
 {- 23 *. Definir una funcion que, dada una lista de enteros, devuelva la suma de la suma de todos los segmentos iniciales.
 Por ejemplo: sumaSeg [1,2,3] = 0 + 1 + 3 + 6 = 10. -}
 sumatoria :: Int -> Int
@@ -183,6 +181,3 @@ sumaSeg (x:xs) = foldl (+) 0 (map sumatoria (x:xs))
 
 -- 24. Definir la lista infinita de los numeros pares.
 infPares = [x | x <- [0,1..] , mod x 2 == 0]
-
-
-
